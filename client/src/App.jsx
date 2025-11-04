@@ -1,14 +1,31 @@
-import './styles/App.css'
+/**
+ * @file App.jsx
+ * @author Alex Kachur
+ * @since 2025-11-04
+ * @purpose Hosts the Family Feud routing structure and shared layout.
+ */
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import QuestionSets from './pages/QuestionSets.jsx';
+import Sessions from './pages/Sessions.jsx';
+import PlayerJoin from './pages/PlayerJoin.jsx';
+import SignIn from './pages/SignIn.jsx';
+import SignUp from './pages/SignUp.jsx';
 
-function App() {
-
+export default function App() {
   return (
-    <>
-      <img src="./Family_Feud_Logo.png" alt="Family Feud Logo" className="logo" />
-      <h1>Welcome to Family Feud!</h1>
-      <p>This is the main application component.</p>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="question-sets" element={<QuestionSets />} />
+          <Route path="sessions" element={<Sessions />} />
+          <Route path="player" element={<PlayerJoin />} />
+          <Route path="signin" element={<SignIn />} />
+          <Route path="signup" element={<SignUp />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
-
-export default App
