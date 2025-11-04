@@ -10,11 +10,11 @@ mongoose.connect(config.mongoUri, {
   // useCreateIndex: true,
   // useUnifiedTopology: true
 }).then(() => {
-  console.log("MongoDB connected successfully.");
+  console.log("✅ MongoDB connected successfully.");
 })
 
 mongoose.connection.on('error', () => {
-  throw new Error(`unable to connect to database: ${config.mongoUri}`);
+  throw new Error(`⚠️ unable to connect to database: ${config.mongoUri}`);
 });
 
 app.get("/", (req, res) => {
@@ -22,8 +22,10 @@ app.get("/", (req, res) => {
 });
 
 app.listen(config.port, (err) => {
-  if (err) console.error(`Error starting server: ${err}`); 
-  console.log(`Server running on http://localhost:${config.port}/`);
+  if (err) console.error(`Error starting server: ${err}`);
+  config.env === 'development'
+    ? console.log(`Server running on http://localhost:${config.port}/`)
+    : console.log(`Server running on https://dailygrind-server.onrender.com`);
 });
 
 export default app;
