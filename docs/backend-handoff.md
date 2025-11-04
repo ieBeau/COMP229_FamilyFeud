@@ -1,0 +1,42 @@
+# Family Feud Front-End → Backend Handoff
+
+## Overview
+The front-end skeleton now exposes host dashboards, question set management, session controls, and a contestant join flow. All data is placeholder-only; every interactive element is annotated with `TODO (Backend Team)` markers that map to expected API routes.
+
+## Required APIs
+| Feature | Route | Method | Notes |
+| --- | --- | --- | --- |
+| List question sets | `/api/question-sets` | GET | Support pagination & optional filters (`category`, `roundType`, `tag`). |
+| Create question set | `/api/question-sets` | POST | Payload includes prompt, answers array, tags, round type. Return created entity. |
+| Update question set | `/api/question-sets/:id` | PUT/PATCH | Allow editing metadata and answer ordering. |
+| Delete question set | `/api/question-sets/:id` | DELETE | Soft-delete preferred for audit. |
+| List sessions | `/api/sessions` | GET | Should surface associated question set title, status, updated timestamp. |
+| Create session | `/api/sessions` | POST | Returns access code + initial team shells. |
+| Session actions | `/api/sessions/:id/actions` | POST | Body `{"action":"addStrike"|"revealAnswer"|...}` to keep UI buttons thin. |
+| Player join | `/api/player-sessions/join` | POST | Accepts access code + display name. Returns player token (JWT) and assigned team. |
+| Auth sign-in | `/auth/signin` | POST | Current middleware expects JWT cookie `t`. Consider setting HttpOnly + SameSite. |
+| Auth sign-out | `/auth/signout` | GET | Clears cookie. |
+| Auth sign-up | `/auth/signup` | POST | Optionally queue approvals; respond with pending status. |
+
+## Real-Time Transport
+- WebSocket namespace suggestion: `/ws/sessions/:id` broadcasting strikes, revealed answers, points, buzzer lockouts.
+- Player buzzer: emit `playerBuzz` events containing session ID, player ID, timestamp; host receives queue for arbitration.
+
+## Response Shapes
+- Question set resources should strip internal IDs from answers when possible to keep payload minimal.
+- Session responses should include `teams`, `scores`, `strikes`, `currentRound`, and `status` fields aligning with placeholders used in `Sessions.jsx`.
+- Auth responses must omit sensitive fields (`hashed_password`, `salt`).
+
+## Validation Considerations
+- Enforce unique prompt/title combos per owner to avoid duplicates.
+- Answer totals should reflect actual survey percentages; reject sums over 100.
+- Access codes should be random six-digit strings with TTL; include regeneration endpoint.
+
+## Error Handling
+- Surfaces should return structured errors `{ error: string, details?: object }` so UI can render inline validation.
+- Rate limit player join + buzzer endpoints to avoid spam.
+
+## Next Steps
+1. Implement REST controllers matching the routes above (see inline TODOs for file references).
+2. Provide API schema / Swagger snippet so the front-end can wire fetch utilities.
+3. Deliver socket event contract for buzzer/host actions to keep latency low.

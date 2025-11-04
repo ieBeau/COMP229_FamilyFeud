@@ -38,3 +38,9 @@ Family Feud is a web-based implementation of the classic survey-style game show.
 
 - Question sets are customizable — add or edit JSON data files to change surveys.
 - Consider adding authentication and persistent storage for extended multiplayer sessions.
+
+### Current Sprint Snapshot (2025-11-04)
+- Front-end skeleton established with dashboard, question management, session control, player join, and auth stubs.
+- Placeholder data lives in `client/src/utils/questionSets.js` and `client/src/utils/gameSessions.js` until APIs land.
+- Documentation added under `docs/` covering gameplay research, backend handoff expectations, and build log.
+- Styling remains basic; design system pass deferred to next milestone.
