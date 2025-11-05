@@ -4,11 +4,13 @@
  * @since 2025-11-04
  * @purpose Monitor and manage active Family Feud sessions.
  */
+import { useNavigate } from 'react-router-dom';
 import PageSection from '../components/PageSection.jsx';
 import { getActiveSessions } from '../utils/gameSessions.js';
 import { getQuestionSetById } from '../utils/questionSets.js';
 
 export default function Sessions() {
+  const navigate = useNavigate();
   const sessions = getActiveSessions();
 
   return (
@@ -66,9 +68,9 @@ export default function Sessions() {
         description="Tools for moderators and scorekeepers."
       >
         <div className="action-grid">
-          <button type="button">Generate New Access Code</button>
-          <button type="button">Download Session Log</button>
-          <button type="button">Archive Session</button>
+          <button type="button" onClick={() => navigate('/under-construction')}>Generate New Access Code</button>
+          <button type="button" onClick={() => navigate('/under-construction')}>Download Session Log</button>
+          <button type="button" onClick={() => navigate('/under-construction')}>Archive Session</button>
         </div>
         {/* TODO (Backend Team): map utilities to POST /api/sessions/:id/actions endpoints. */}
       </PageSection>

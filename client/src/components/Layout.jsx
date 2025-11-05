@@ -5,7 +5,7 @@
  * @purpose Provides shared chrome for host dashboard views including header navigation.
  */
 import { useState } from 'react';
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { NAV_ITEMS, AUTH_NAV_ITEMS, HOME_NAV_ITEM } from '../utils/navigation.js';
 import { signOut } from '../utils/authClient.js';
 
@@ -13,6 +13,7 @@ export default function Layout() {
   const location = useLocation();
   const isLanding = location.pathname === '/';
   const [signOutStatus, setSignOutStatus] = useState('idle');
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     setSignOutStatus('loading');
@@ -20,6 +21,7 @@ export default function Layout() {
       await signOut();
       setSignOutStatus('success');
       // TODO (Backend Team): expose session invalidate confirmation so we can update client-side auth state.
+      navigate('/signed-out');
     } catch (error) {
       setSignOutStatus('error');
       console.error('Failed to sign out', error);

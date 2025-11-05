@@ -4,11 +4,13 @@
  * @since 2025-11-04
  * @purpose Host landing screen summarizing Family Feud content and live sessions.
  */
+import { useNavigate } from 'react-router-dom';
 import PageSection from '../components/PageSection.jsx';
 import { getQuestionSets } from '../utils/questionSets.js';
 import { getActiveSessions } from '../utils/gameSessions.js';
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const questionSets = getQuestionSets();
   const sessions = getActiveSessions();
 
@@ -75,9 +77,9 @@ export default function Dashboard() {
         description="Launch the most common workflows from one place."
       >
         <div className="action-grid">
-          <button type="button">Import Survey CSV</button>
-          <button type="button">Start Fast Money</button>
-          <button type="button">View Analytics</button>
+          <button type="button" onClick={() => navigate('/under-construction')}>Import Survey CSV</button>
+          <button type="button" onClick={() => navigate('/under-construction')}>Start Fast Money</button>
+          <button type="button" onClick={() => navigate('/under-construction')}>View Analytics</button>
         </div>
         {/* TODO (Backend Team): wire quick actions to respective endpoints/workflows. */}
       </PageSection>
