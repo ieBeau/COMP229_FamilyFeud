@@ -5,11 +5,13 @@
  * @purpose Provides shared chrome for host dashboard views including header navigation.
  */
 import { useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { NAV_ITEMS, AUTH_NAV_ITEMS } from '../utils/navigation.js';
 import { signOut } from '../utils/authClient.js';
 
 export default function Layout() {
+  const location = useLocation();
+  const isLanding = location.pathname === '/';
   const [signOutStatus, setSignOutStatus] = useState('idle');
 
   const handleSignOut = async () => {
@@ -25,7 +27,8 @@ export default function Layout() {
   };
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell${isLanding ? ' app-shell--landing' : ''}`}>
+      {isLanding ? null : (
       <header className="app-header">
         <div className="app-header__brand">
           <img src="/Family_Feud_Logo.png" alt="Family Feud" className="app-header__logo" />
@@ -67,6 +70,7 @@ export default function Layout() {
           </ul>
         </nav>
       </header>
+      )}
 
       <main className="app-main">
         <Outlet />

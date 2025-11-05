@@ -6,6 +6,7 @@
  */
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout.jsx';
+import Home from './pages/Home.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import QuestionSets from './pages/QuestionSets.jsx';
 import Sessions from './pages/Sessions.jsx';
@@ -18,7 +19,8 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
+          <Route index element={<Home />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="question-sets" element={<QuestionSets />} />
           <Route path="sessions" element={<Sessions />} />
           <Route path="player" element={<PlayerJoin />} />
