@@ -1,9 +1,15 @@
-import express from 'express'
+import { Router } from 'express';
 import authController from '../controllers/auth.controller.js'
 
-const router = express.Router();
+export default Router()
+  .get('/validate', authMiddleware, (req, res) => {
+     console.log("validate: ")
+    res.status(200).json({ valid: true, user: req.user });
+  })
 
-router.post('/auth/signin', authController.signin);
-router.get('/auth/signout', authController.signout);
-
-export default router;
+  .post('/logout', (_, res) => {
+    console.log("Logout: ")
+    res.clearCookie('token');
+    res.json({ message: "Logged out successfully" });
+  })
+  .post('/login', authController.signin);

@@ -4,6 +4,8 @@
  * @since 2025-11-04
  * @purpose Hosts the Family Feud routing structure and shared layout.
  */
+
+import { AuthProvider } from '../components/auth/context.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout.jsx';
 import Home from './pages/Home.jsx';
@@ -20,20 +22,22 @@ import SignedOut from './pages/SignedOut.jsx';
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="question-sets" element={<QuestionSets />} />
-          <Route path="sessions" element={<Sessions />} />
-          <Route path="player" element={<PlayerJoin />} />
-          <Route path="signin" element={<SignIn />} />
-          <Route path="signup" element={<SignUp />} />
-          <Route path="under-construction" element={<UnderConstruction />} />
-          <Route path="signed-out" element={<SignedOut />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="question-sets" element={<QuestionSets />} />
+            <Route path="sessions" element={<Sessions />} />
+            <Route path="player" element={<PlayerJoin />} />
+            <Route path="signin" element={<SignIn />} />
+            <Route path="signup" element={<SignUp />} />
+            <Route path="under-construction" element={<UnderConstruction />} />
+            <Route path="signed-out" element={<SignedOut />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

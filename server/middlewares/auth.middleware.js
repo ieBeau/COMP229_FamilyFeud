@@ -1,33 +1,25 @@
-import jwt from 'jsonwebtoken'
 
-import config from '../config/config.js'
+import jwt from 'jsonwebtoken';
 
-const requireSignin = (req, res, next) => {
-    const token = req.cookies.t;
+export default (req, res, next) => {
+  let token;
 
-    if (!token) return res.status(401).json({ error: "Unauthorized" });
+  /**@type {string} */const authheader = req.headers.authorization;
+  if (authheader && authheader.startsWith('Bearer '))
+    token = authheader.split(" ")[1];
 
-    try {
-        jwt.verify(token, config.jwtSecret, (err, decoded) => {
-            if (err) return res.status(401).json({ error: "Unauthorized" });
+  else if (req.cookies.token)
+    token = req.cookies.token;
 
-            req.auth = decoded;
-            next();
-        });
-    } catch (err) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
-};
+  if (!token) return res.status(401).json({ message: "Unauthorized" });
 
-const hasAuthorization = (req, res, next) => {
-    const authorized = req.params && req.auth && (
-        req.params.id == req.auth._id ||
-        req.auth.admin
-    );
-
-    if (!authorized) return res.status(403).json({ error: "User is not authorized" });
-
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
     next();
-};
+  }
+  catch (e) {
+    return res.status(401).json({ message: "Invalid Token" });
+  };
 
-export default { requireSignin, hasAuthorization }
+};
