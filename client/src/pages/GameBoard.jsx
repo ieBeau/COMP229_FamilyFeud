@@ -23,7 +23,32 @@ const HIDDEN_CARD_ASSETS = [
   '/Hidden_Card_8.png',
 ];
 
-const HALF_SLOT_COUNT = SLOT_COUNT / 2;
+// Card slots are locked to their TV positions. Pair top rows as 1/4, 2/5, 3/6, then append any leftovers (7/8).
+const DISPLAY_ORDER = (() => {
+  const desiredPairings = [
+    [0, 3], // 1 / 4
+    [1, 4], // 2 / 5
+    [2, 5], // 3 / 6
+  ];
+  const order = [];
+  const used = new Set();
+
+  desiredPairings.forEach(([leftIndex, rightIndex]) => {
+    if (leftIndex < SLOT_COUNT && rightIndex < SLOT_COUNT) {
+      order.push(leftIndex, rightIndex);
+      used.add(leftIndex);
+      used.add(rightIndex);
+    }
+  });
+
+  for (let slotIndex = 0; slotIndex < SLOT_COUNT; slotIndex += 1) {
+    if (!used.has(slotIndex)) {
+      order.push(slotIndex);
+    }
+  }
+
+  return order;
+})();
 
 // TODO: Hydrate these placeholders with real lobby/team assignments once auth/session wiring lands.
 const PLAYER_PLACEHOLDERS = [
@@ -154,25 +179,7 @@ export default function GameBoard() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [roundIndex, setRoundIndex] = useState(0);
   const currentRound = ROUND_DATA[roundIndex] ?? ROUND_DATA[0];
-const gridAnswers = useMemo(() => buildAnswerSlots(currentRound), [currentRound]);
-  // Keep the board symmetrical by filling every row left-to-right with real answers first
-  // and pushing any empty placeholders down to the bottom rows.
-  const orderedSlotIndices = useMemo(() => {
-    const withData = [];
-    const withoutData = [];
-    for (let rowIndex = 0; rowIndex < HALF_SLOT_COUNT; rowIndex += 1) {
-      const leftIndex = rowIndex;
-      const rightIndex = rowIndex + HALF_SLOT_COUNT;
-      [leftIndex, rightIndex].forEach((slotIndex) => {
-        if (gridAnswers[slotIndex]) {
-          withData.push(slotIndex);
-        } else {
-          withoutData.push(slotIndex);
-        }
-      });
-    }
-    return [...withData, ...withoutData];
-  }, [gridAnswers]);
+  const gridAnswers = useMemo(() => buildAnswerSlots(currentRound), [currentRound]);
   const [revealedAnswers, setRevealedAnswers] = useState(() =>
     gridAnswers.map((answer) => (answer ? false : 'empty')),
   );
@@ -652,7 +659,7 @@ const gridAnswers = useMemo(() => buildAnswerSlots(currentRound), [currentRound]
 
             <div className="game-board-board">
               <section className="game-board-grid" aria-label="Answer card placeholders">
-                {orderedSlotIndices.map((slotIndex) => {
+                {DISPLAY_ORDER.map((slotIndex) => {
                   const slot = gridAnswers[slotIndex];
                   const slotState = revealedAnswers[slotIndex];
                   let cardAsset = EMPTY_CARD_ASSET;
