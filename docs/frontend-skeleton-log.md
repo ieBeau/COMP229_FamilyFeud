@@ -11,12 +11,20 @@
 8. **24:35** — Introduced NotFound, UnderConstruction, and SignedOut pages; routed unfinished actions consistently.
 9. **24:45** — Final cleanup: aligned nav button styling, linked logo/home, updated READMEs and handoff notes.
 
+## Timeline – November 12, 2025
+2. **22:05** — Built `/game-board` scaffolding with PPT assets (background, question plaque, answer/hidden cards, timer, avatars, empty placeholders).
+3. **23:10** — Implemented full host flow: round intro splash per round asset, question zoom overlay, spacebar face-off, answer timers, strikes, steals, scoreboard, and score multipliers.
+4. **24:20** — Balanced the eight-slot grid (1/5, 2/6, 3/7, 4/8) and repositioned player panels + controls to mirror the real TV layout.
+5. **24:45** — Tuned timers to show only playable seconds, added inline docs/TODOs for backend data hydration, and refreshed README guidance.
+
 ## Verification Steps
 - Run `npm install` at repo root to ensure workspace deps restore.
 - Launch `npm run dev --prefix client` to verify routes render with placeholder data.
 - Validate linting with `npm run lint --prefix client` (optional; no new lint errors expected).
+- Run `npm run build --prefix client` to ensure the Vite production bundle succeeds with asset-heavy Game Board UI.
 
 ## Next Actions
 - Replace placeholder datasets with API clients once endpoints stabilize.
 - Wire form submissions and session actions to live controllers.
 - Expand CSS tokens into full design system after functionality sign-off.
+- Hydrate `/game-board` with actual round/question JSON, team assignments, and live sockets; remove inline placeholder arrays once backend feed lands.
