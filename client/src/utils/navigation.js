@@ -29,6 +29,11 @@ export const NAV_ITEMS = [
     description: 'Monitor in-progress games, manage teams, and launch rounds.',
   },
   {
+    path: '/game-board',
+    label: 'Game Board',
+    description: 'Preview the live board layout with placeholder slots.',
+  },
+  {
     path: '/player',
     label: 'Player Join',
     description: 'Entry point for contestants to join matches using an access code.',

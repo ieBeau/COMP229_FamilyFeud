@@ -16,6 +16,7 @@ import SignUp from './pages/SignUp.jsx';
 import NotFound from './pages/NotFound.jsx';
 import UnderConstruction from './pages/UnderConstruction.jsx';
 import SignedOut from './pages/SignedOut.jsx';
+import GameBoard from './pages/GameBoard.jsx';
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="signed-out" element={<SignedOut />} />
           <Route path="*" element={<NotFound />} />
         </Route>
+        <Route path="/game-board" element={<GameBoard />} />
       </Routes>
     </BrowserRouter>
   );
