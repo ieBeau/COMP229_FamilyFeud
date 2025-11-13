@@ -1,4 +1,4 @@
-const SERVER_URL = import.meta.env.PROD ? (import.meta.env.VITE_SERVER_URL || '') : '';
+const SERVER_URL = import.meta.env.PROD ? (import.meta.env.VITE_SERVER_URL || '') : (import.meta.env.VITE_LOCAL_URL || '');
 
 export const apiFetch = async (endpoint, options = {}) => {
   const res = await fetch(`${SERVER_URL}${endpoint}`, {
@@ -11,5 +11,5 @@ export const apiFetch = async (endpoint, options = {}) => {
     throw new Error(`Fetch error: ${res.status} ${errorText}`);
   }
 
-  return res.json();
+  return res;
 };
