@@ -19,7 +19,15 @@ app.use(cors({
 }));
 app.use(compress());
 app.use(cookieParser());
+
+app.use(cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    credentials: true
+}));
+app.use(compress());
+app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
@@ -30,6 +38,8 @@ app.use('/', aiRoutes);
 
 
 app.use((err, req, res, next) => {
+    if (err.name === 'UnauthorizedError') res.status(401).json({ "error": err.name + ": " + err.message })
+    // else if (err) res.status(400).json({ "error": err.name + ": " + err.message })
     if (err.name === 'UnauthorizedError') res.status(401).json({ "error": err.name + ": " + err.message })
     // else if (err) res.status(400).json({ "error": err.name + ": " + err.message })
 });

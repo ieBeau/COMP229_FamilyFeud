@@ -13,6 +13,11 @@ import SignIn from './pages/SignIn.jsx';
 import SignUp from './pages/SignUp.jsx';
 import SignedOut from './pages/SignedOut.jsx';
 
+
+import SignIn from './pages/SignIn.jsx';
+import SignUp from './pages/SignUp.jsx';
+import SignedOut from './pages/SignedOut.jsx';
+
 import Home from './pages/Home.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import QuestionSets from './pages/QuestionSets.jsx';
@@ -49,4 +54,5 @@ export default function App() {
     </Router>
 
   );
+};
 };
