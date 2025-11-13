@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { AuthContext } from './AuthContext';
 
-import { apiFetch } from '../utils/api';
+import { apiFetch } from '../../utils/api';
 
 export default function AuthProvider({ children }) {
   const
