@@ -30,6 +30,7 @@ const getAiResponse = async (req, res) => {
         
         res.status(200).json(result);
     } catch (error) {
+        if (error.name === 'ZodError') return res.status(400).json({ message: 'Invalid AI response format' });
         res.status(500).json({ message: error.message });
     }
 };
