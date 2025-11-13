@@ -35,7 +35,6 @@ export default function AuthProvider({ children }) {
 
   const signIn = async (email, password) => {
     try {
-      console.log("authprovider signin: ", email, password)
       const res = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
