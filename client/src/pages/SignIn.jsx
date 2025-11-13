@@ -35,7 +35,6 @@ export default function SignIn() {
       }
     }
     catch (error) {
-      console.debug("SignIn: ", error)
       setStatus({ state: 'error', message: error });
     }
   };
