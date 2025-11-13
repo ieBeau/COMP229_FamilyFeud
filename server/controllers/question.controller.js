@@ -1,4 +1,4 @@
-import QuestionModel from '../models/question.model.js'
+import QuestionModel from '../models/question.model.js';
 
 const getAllQuestions = async (req, res) => {
     try {
