@@ -1,7 +1,7 @@
 # Family Feud – Front-End Skeleton
 
 ## Overview
-React + Vite SPA that powers the host dashboard, question management, session control, and contestant join experiences for the Family Feud project. Styling is intentionally minimal; focus is on layout structure, data requirements, and integration touch points for the upcoming backend release.
+React + Vite SPA that powers the host dashboard, question management, session control, contestant join, and full-screen game board experiences for the Family Feud project. Styling is intentionally minimal; focus is on layout structure, data requirements, and integration touch points for the upcoming backend release.
 
 ## Tech Stack
 - React 19 with Vite 7
@@ -10,9 +10,10 @@ React + Vite SPA that powers the host dashboard, question management, session co
 
 ## Available Scripts
 ```bash
-npm install       # from repository root to install all workspaces
-npm run dev       # runs client (Vite) and server (Express) concurrently
-npm run dev --prefix client  # front-end only
+npm install                     # from repo root to install all workspaces
+npm start                       # runs client (Vite) + server (Express) concurrently
+npm run dev --prefix client     # front-end only (Vite on 5173)
+npm run build --prefix client   # production build
 ```
 
 ## Project Structure
@@ -31,7 +32,9 @@ client/
 - Sessions view outlines live controls and utility actions awaiting API hooks.
 - Player join screen delivers access code form plus buzzer button ready for WebSocket wiring.
 - Auth views now call `/api/users/` and `/auth/signin`, sanitising responses until backend removes sensitive fields.
-- Basic full-screen Home landing is live on `/` (dark blue stage color, centered logo, Sign In and Play buttons). A simple slide‑out menu (hamburger top‑left) provides quick links while the global header is hidden on the landing screen.
+- Basic full-screen Home landing is live on `/` (dark blue stage color, centered logo, Sign In and Play buttons). A shared slide‑out menu (`LandingNavControls`) keeps navigation consistent between Home and Game Board while the global header stays hidden on the landing screen.
+- `/game-board` now renders the TV-style stage: round intros, question zoom overlay, face-off buzzing (Space bar), answer timers, strikes/steal flow, and placeholder team assets sized for the exported PPT cards. Eight slots render in 1/5, 2/6, 3/7, 4/8 order with empty cards forced to the bottom row to keep the layout balanced.
+- Placeholder round/question data still lives inline inside `client/src/pages/GameBoard.jsx`. Once the backend exposes a question-set feed, replace the hard-coded array and hydrate the UI via context or React Query.
  - Placeholder routes are available:
    - `/under-construction` for unfinished flows and buttons
    - `/signed-out` confirmation after sign‑out
@@ -44,10 +47,10 @@ client/
   - Set `credentials: 'include'` when calling auth routes so the cookie is stored.
 
 ## Next Steps
-1. Replace placeholder data with fetch hooks once REST endpoints are available.
+1. Replace placeholder data (dashboard + game board) with fetch hooks once REST endpoints are available.
 2. Introduce global state management (React Query or Redux) as soon as live data is consumed.
 3. Layer in real-time communication (Socket.IO or native WebSocket) for buzzer + host controls.
-4. Apply design system styling and responsive refinements after functionality stabilizes.
+4. Apply design system styling and responsive refinements after functionality stabilizes (PPT assets establish current layout ratios).
 5. Replace the temporary landing drawer with a shared, auth‑aware global nav and surface role‑based routes after sign‑in.
 6. Replace placeholder routes (UnderConstruction/SignedOut) with final implementations as endpoints and flows land.
 
