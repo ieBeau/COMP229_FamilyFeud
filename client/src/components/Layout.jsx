@@ -24,7 +24,7 @@ export default function Layout() {
       if (success)
         navigate('/signed-out');
       else 
-        setStatus({ state: 'error', message: message || 'Checking credentials…' });
+        setStatus('error');
       
     } catch (error) {
       setStatus('error');
