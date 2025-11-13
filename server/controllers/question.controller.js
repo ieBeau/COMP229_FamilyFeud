@@ -22,6 +22,24 @@ const getQuestion = async (req, res) => {
     }
 };
 
+const getRandomQuestion = async (req, res) => {
+    try {
+        const count = await QuestionModel.countDocuments();
+
+        const randomIndex = Math.floor(Math.random() * count);
+        const question = await QuestionModel.findOne().skip(randomIndex);
+
+        console.log({count, randomIndex})
+        console.log(question)
+
+        if (!question) return res.status(404).json({ message: 'Question not found' });
+
+        res.status(200).json(question);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 const createQuestion = async (req, res) => {
     try {
         const newQuestion = new QuestionModel(req.body);
@@ -34,4 +52,4 @@ const createQuestion = async (req, res) => {
     }
 };
 
-export default { getAllQuestions, getQuestion, createQuestion };
+export default { getAllQuestions, getQuestion, getRandomQuestion, createQuestion };
