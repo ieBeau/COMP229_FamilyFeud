@@ -34,7 +34,7 @@ const getRandomQuestion = async (req, res) => {
         const question = {
             _id: result._id,
             question: result.question,
-            answersCount: result.answers.length
+            size: result.answers.length
         };
 
         res.status(200).json(question);
