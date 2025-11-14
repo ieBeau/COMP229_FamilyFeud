@@ -27,17 +27,12 @@ export default function GameBoard() {
   const { user } = useAuth();
   const players = useMemo(() => {
     if (!user) return PLAYER_PLACEHOLDERS;
-    const avatarCandidate =
-      user.avatarUrl ||
-      user.avatar ||
-      user.profilePicture ||
-      user.photo ||
-      PLAYER_PLACEHOLDERS[0].avatar;
+    // TODO: Replace default avatar with user-provided image when backend exposes it.
     return [
       {
         ...PLAYER_PLACEHOLDERS[0],
         playerName: user.name || PLAYER_PLACEHOLDERS[0].playerName,
-        avatar: avatarCandidate || PLAYER_PLACEHOLDERS[0].avatar,
+        avatar: PLAYER_PLACEHOLDERS[0].avatar,
       },
       ...PLAYER_PLACEHOLDERS.slice(1),
     ];
