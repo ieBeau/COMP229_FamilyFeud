@@ -26,6 +26,7 @@ export default function GameBoard() {
 
   const {
     currentRound,
+    roundStatus,
     gridAnswers,
     revealedAnswers,
     phase,
@@ -45,11 +46,13 @@ export default function GameBoard() {
     showPlayOrPassActions,
     showRoundAdvanceAction,
     roundOverlayAsset,
+    isCheckingAnswer,
     inputRef,
     setGuess,
     handleGuessSubmit,
     handleControlChoice,
     advanceRound,
+    reloadRound,
   } = useGameBoardEngine();
 
   const strikesDisplay = Array.from({ length: 3 }, (_, index) => (
@@ -57,6 +60,14 @@ export default function GameBoard() {
       X
     </span>
   ));
+  // Prefer backend prompt text, but fall back to status to keep the UI informative.
+  const questionText =
+    currentRound?.question ??
+    (roundStatus.state === 'loading'
+      ? roundStatus.message || 'Loading question…'
+      : roundStatus.message || 'Question unavailable');
+  const roundLabel = currentRound?.label ?? 'Round';
+  const roundMultiplier = currentRound?.multiplier ?? 1;
 
   return (
     <div className="landing-basic game-board">
@@ -84,22 +95,37 @@ export default function GameBoard() {
             loading="lazy"
           />
 
-          {phase === 'intro' ? (
+          {phase === 'intro' && roundStatus.state === 'idle' ? (
             <div className="game-board-round-intro" aria-label="Round intro">
               <div className="game-board-round-intro__logo">
                 <img src={roundOverlayAsset} alt="Round splash" />
-                <span>{currentRound.label}</span>
+                <span>{roundLabel}</span>
               </div>
             </div>
           ) : null}
 
-          {phase === 'questionZoom' || phase === 'faceoffBuzz' ? (
+          {roundStatus.state === 'loading' ? (
+            <div className="game-board-round-status" aria-live="polite">
+              <p>{roundStatus.message || 'Loading question…'}</p>
+            </div>
+          ) : null}
+
+          {roundStatus.state === 'error' ? (
+            <div className="game-board-round-error" aria-live="assertive">
+              <p>{roundStatus.message || 'Unable to load question.'}</p>
+              <button type="button" onClick={reloadRound}>
+                Retry Question
+              </button>
+            </div>
+          ) : null}
+
+          {roundStatus.state === 'idle' && (phase === 'questionZoom' || phase === 'faceoffBuzz') ? (
             <div className="game-board-question-overlay" aria-live="polite">
               <div
                 className="game-board-question-overlay__card"
                 style={{ backgroundImage: `url(${QUESTION_CARD_ASSET})` }}
               >
-                <p>{currentRound.question}</p>
+                <p>{questionText}</p>
               </div>
               <span>Buzz with spacebar</span>
             </div>
@@ -111,14 +137,14 @@ export default function GameBoard() {
               aria-label="Question plaque"
               style={{ backgroundImage: `url(${QUESTION_CARD_ASSET})` }}
             >
-              <p className="game-board-question__text">{currentRound.question}</p>
+              <p className="game-board-question__text">{questionText}</p>
             </div>
 
             <div className="game-board-info-row">
               <div className="game-board-round-meta">
-                <div className="game-board-round-meta__item">{currentRound.label}</div>
+                <div className="game-board-round-meta__item">{roundLabel}</div>
                 <div className="game-board-round-meta__item">
-                  Pot: {roundPot} pts · x{currentRound.multiplier}
+                  Pot: {roundPot} pts · x{roundMultiplier}
                 </div>
               </div>
 
@@ -144,6 +170,7 @@ export default function GameBoard() {
             </div>
 
             <div className="game-board-board">
+              {/* Grid renders in broadcast order so assets line up with the TV layout. */}
               <section className="game-board-grid" aria-label="Answer card placeholders">
                 {DISPLAY_ORDER.map((slotIndex) => {
                   const slot = gridAnswers[slotIndex];
@@ -249,9 +276,16 @@ export default function GameBoard() {
                     value={guess}
                     onChange={(event) => setGuess(event.target.value)}
                     placeholder={formPlaceholder}
-                    disabled={!ANSWERING_PHASES.has(phase)}
+                    disabled={
+                      !ANSWERING_PHASES.has(phase) || roundStatus.state !== 'idle' || isCheckingAnswer
+                    }
                   />
-                  <button type="submit" disabled={!ANSWERING_PHASES.has(phase)}>
+                  <button
+                    type="submit"
+                    disabled={
+                      !ANSWERING_PHASES.has(phase) || roundStatus.state !== 'idle' || isCheckingAnswer
+                    }
+                  >
                     Lock In
                   </button>
                 </form>
