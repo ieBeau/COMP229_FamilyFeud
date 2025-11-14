@@ -7,7 +7,7 @@ export default rateLimit({
   keyGenerator: (req) => ipKeyGenerator(
     req.headers['x-forwarded-for']
       ? req.headers['x-forwarded-for'].split(',')[0].trim()
-      : req.ip
+      : ipKeyGenerator(req.ip)
   ),
   message: "Too many login attempts, please try again later"
 });
