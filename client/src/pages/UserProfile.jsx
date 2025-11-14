@@ -106,7 +106,7 @@ return (
     {status.state !== 'idle' && (
         <p
             className={
-                'form-status' +
+                'form-status ' +
                     (status.state === 'error' ? 'form-status--error' : 'form-status--success')
                     }
                 role='status'
