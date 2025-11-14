@@ -49,7 +49,8 @@ app
   })
 
   .get(/^(?!\/api).*/, rateLimit, (_, res) => {
-    res.sendFile(path.join(process.cwd(), 'client/', 'index.html'));
+    res.json({ message: "Welcome to Family Feud!" });
+    // res.sendFile(path.join(process.cwd(), 'client/dist', 'index.html'));
   })
 
   .listen(config.port, (err) => {
