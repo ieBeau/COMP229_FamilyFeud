@@ -40,3 +40,23 @@ export const auth = {
 
   signout: () => apiFetch('/auth/signout', { method: 'GET' })
 };
+
+export const questions = {
+  getRandom: (options = {}) => {
+    const params = new URLSearchParams();
+    if (options.minAnswers) params.set('minAnswers', options.minAnswers);
+    if (options.maxAnswers) params.set('maxAnswers', options.maxAnswers);
+    if (options.round) params.set('round', options.round);
+    const query = params.toString() ? `?${params.toString()}` : '';
+    return apiFetch(`/question${query}`, { method: 'GET' });
+  },
+  getById: (id) => apiFetch(`/question/${id}`, { method: 'GET' })
+};
+
+export const ai = {
+  submitAnswer: (questionId, userAnswer) =>
+    apiFetch(`/ai/${questionId}`, {
+      method: 'POST',
+      body: JSON.stringify({ userAnswer })
+    })
+};

@@ -7,6 +7,7 @@
 import { BUZZ_KEYS, PLAYER_PLACEHOLDERS, SLOT_COUNT } from './gameBoardConstants.js';
 
 export function normalize(text) {
+  // Keeps comparisons case/whitespace agnostic for lenient answer matching.
   return text.trim().toLowerCase();
 }
 
@@ -23,8 +24,10 @@ export function buildAnswerSlots(round) {
   return Array.from({ length: SLOT_COUNT }, (_, index) => normalized[index] ?? null);
 }
 
-export function getOpponentIndex(playerIndex) {
-  return (playerIndex + 1) % PLAYER_PLACEHOLDERS.length;
+export function getOpponentIndex(playerIndex, playerCount = PLAYER_PLACEHOLDERS.length) {
+  // Two placeholder teams cycle 0 -> 1 -> 0 (extendable for future rosters).
+  if (!playerCount) return 0;
+  return (playerIndex + 1) % playerCount;
 }
 
 export function isSpaceKey(event) {
