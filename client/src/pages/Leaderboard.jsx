@@ -13,7 +13,7 @@ export default function Leaderboard(props) {
   
   // Placeholder data for testing
 
-  {/* TODO: Placeholders to be replaced with real data fetching logic */}
+  // TODO: Placeholders to be replaced with real data fetching logic
   const placeholderTeams = [
     { id: 1, teamName: "Lightning Strikers", members: "John, Sarah, Mike", gamesPlayed: 15, wins: 12, loses: 3, points: 1250 },
     { id: 2, teamName: "Thunder Bolts", members: "Emma, David, Lisa", gamesPlayed: 14, wins: 10, loses: 4, points: 1100 },
