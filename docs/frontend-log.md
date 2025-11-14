@@ -1,4 +1,6 @@
-# Front-End Skeleton Build Log
+# Front-End Build Log
+
+_Formerly “Front-End Skeleton Build Log” — now tracks ongoing client-side work beyond the initial scaffolding._
 
 ## Timeline – November 4, 2025
 1. **16:28** — Captured gameplay + UX research summary (`docs/family-feud-research.md`).
@@ -17,9 +19,16 @@
 4. **24:20** — Balanced the eight-slot grid (1/5, 2/6, 3/7, 4/8) and repositioned player panels + controls to mirror the real TV layout.
 5. **24:45** — Tuned timers to show only playable seconds, added inline docs/TODOs for backend data hydration, and refreshed README guidance.
 
+## Timeline – November 14, 2025
+1. **09:05** — Wired question fetching to `/api/v1/question` and hydrated the gameplay engine with real Mongo data; removed inline placeholder rounds.
+2. **10:10** — Connected answer submissions to `/api/v1/ai/:questionId`, added response parsing + Zod validation, and hardened timer restart logic for API failures.
+3. **12:00** — Audited secrets/auth handling: verified `.env` ignore rules, documented credential rotation, and filed fixes for cookie naming + async password checks.
+4. **13:15** — Updated README/documentation to reflect live backend integration, Atlas query instructions, and outstanding API work.
+
 ## Verification Steps
-- Run `npm install` at repo root to ensure workspace deps restore.
-- Launch `npm run dev --prefix client` to verify routes render with placeholder data.
+- Run `npm install` at repo root to ensure workspace deps restore for both workspaces.
+- Provide a populated `.env` (see README sample) with MongoDB + Gemini keys before booting.
+- Launch `npm start` to run Vite + Express together; confirm `/game-board` loads a random question and AI endpoint responds.
 - Validate linting with `npm run lint --prefix client` (optional; no new lint errors expected).
 - Run `npm run build --prefix client` to ensure the Vite production bundle succeeds with asset-heavy Game Board UI.
 

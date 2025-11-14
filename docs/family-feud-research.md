@@ -16,6 +16,27 @@
 - Game session: teams, current round index, strikes, revealed answers, active player, timer state, scoreboard.
 - Event log: sequence of guesses, strikes, steals for auditing/replay.
 
+### Current Dataset
+- Questions now live in MongoDB Atlas (`FamilyFeud.questions` collection). Each document mirrors the following structure:
+  ```json
+  {
+    "_id": ObjectId("69177a52ceff2b983e8145a0"),
+    "question": "Name The Most Used Piece Of Furniture In A House.",
+    "answers": [
+      { "answer": "Couch", "points": 55 },
+      { "answer": "Bed", "points": 23 },
+      { "answer": "Arm Chair", "points": 15 }
+    ]
+  }
+  ```
+- To query a prompt directly inside Atlas Data Explorer or `mongosh`:
+  ```javascript
+  db.questions.findOne({
+    question: "Besides A Bird, Name An Animal That Has Claws."
+  });
+  ```
+- Future enrichment (category/difficulty) can be appended without breaking the current client because it only relies on `_id`, `question`, `answers[]`, and derived `size`.
+
 ## Front-End Considerations
 - Host dashboard controls question reveal, strike tracking, and team management.
 - Player view requires buzzer interaction, answer submission, and status updates in real time.

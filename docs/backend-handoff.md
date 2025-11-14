@@ -1,9 +1,21 @@
 # Family Feud Front-End → Backend Handoff
 
 ## Overview
-The front-end skeleton now exposes host dashboards, question set management, session controls, and a contestant join flow. All data is placeholder-only; every interactive element is annotated with `TODO (Backend Team)` markers that map to expected API routes.
+The front-end skeleton now exposes host dashboards, question set management, session controls, a contestant join flow, and a fully wired `/game-board`. The board consumes live APIs for random question pulls (`/api/v1/question`), AI-assisted answer validation (`/api/v1/ai/:questionId`), and authentication (`/api/v1/auth/*`). Remaining dashboards still rely on placeholder utilities and need the routes listed below.
 
-## Required APIs
+## Currently Implemented Endpoints
+| Feature | Route | Method | Notes |
+| --- | --- | --- | --- |
+| Auth signup | `/api/v1/auth/signup` | POST | Returns JWT via cookie `t`; backend must ensure password hashing + duplicate protection. |
+| Auth signin | `/api/v1/auth/signin` | POST | Issues JWT cookie; client expects `credentials: 'include'`. |
+| Auth validate | `/api/v1/auth/validate` | GET | Used by `AuthProvider` on mount to hydrate session context. |
+| Auth signout | `/api/v1/auth/signout` | GET | Clears cookie. |
+| User CRUD | `/api/v1/user/:id` | GET/PUT/DELETE | Protected via `requireSignin` + `hasAuthorization`. |
+| Questions | `/api/v1/question`, `/api/v1/question/:id` | GET | Random-question endpoint honors `minAnswers`, `maxAnswers`, or `round` query params; `/id` returns full prompt/answers. |
+| Question creation | `/api/v1/question` | POST | Basic insertion endpoint (no validation yet). |
+| AI answer check | `/api/v1/ai/:questionId` | POST | Sends `{ userAnswer }` to Gemini; response schema enforced with Zod. |
+
+## Required APIs (Still Outstanding)
 | Feature | Route | Method | Notes |
 | --- | --- | --- | --- |
 | List question sets | `/api/v1/question-sets` | GET | Support pagination & optional filters (`category`, `roundType`, `tag`). |
@@ -14,16 +26,13 @@ The front-end skeleton now exposes host dashboards, question set management, ses
 | Create session | `/api/v1/sessions` | POST | Returns access code + initial team shells. |
 | Session actions | `/api/v1/sessions/:id/actions` | POST | Body `{"action":"addStrike"|"revealAnswer"|...}` to keep UI buttons thin. |
 | Player join | `/api/v1/player-sessions/join` | POST | Accepts access code + display name. Returns player token (JWT) and assigned team. |
-| Auth sign-in | `v1//auth/signin` | POST | Current middleware expects JWT cookie `t`. Consider setting HttpOnly + SameSite. |
-| Auth sign-out | `v1//auth/signout` | GET | Clears cookie. |
-| Auth sign-up | `v1//auth/signup` | POST | Optionally queue approvals; respond with pending status. |
-| Forgot password | `v1//auth/forgot-password` | POST | Initiates password reset email/token. |
-| Reset password | `v1//auth/reset-password` | POST | Confirms token + sets new password (bcrypt/argon). |
+| Auth forgot password | `/api/v1/auth/forgot-password` | POST | Initiates password reset email/token. |
+| Auth reset password | `/api/v1/auth/reset-password` | POST | Confirms token + sets new password (bcrypt/argon). |
 
 ## Dev Integration Notes
-- The front-end dev server proxies both `/api/v1/*` and `/api/v1/auth/*` to the Express backend on `http://localhost:3000`. Keep CORS permissive in development.
-- Please set cookies with `HttpOnly`, `SameSite=Lax` (or `Strict` where possible), and `Secure` in production (HTTPS). The client already sends `credentials: 'include'`.
-- Consider including lightweight `role` metadata in auth responses so the SPA can route hosts/producers.
+- The front-end dev server proxies `/api/v1/*` to the Express backend on `http://localhost:3000`. Keep CORS permissive (`origin` env var) in development.
+- Cookies should be `HttpOnly` + `SameSite=Strict` in prod; for local HTTP you may temporarily disable `secure` to allow testing.
+- Include lightweight `role` metadata in auth responses so the SPA can route hosts/producers.
 
 ## Real-Time Transport
 - WebSocket namespace suggestion: `/ws/sessions/:id` broadcasting strikes, revealed answers, points, buzzer lockouts.
@@ -33,6 +42,12 @@ The front-end skeleton now exposes host dashboards, question set management, ses
 - Question set resources should strip internal IDs from answers when possible to keep payload minimal.
 - Session responses should include `teams`, `scores`, `strikes`, `currentRound`, and `status` fields aligning with placeholders used in `Sessions.jsx`.
 - Auth responses must omit sensitive fields (`hashed_password`, `salt`) and include role metadata so the front-end can route hosts/producers after sign-in.
+
+## Action Items from Latest Audit
+- **Secrets hygiene:** `.env` is ignored, but rotate any credentials previously committed or shared. Never bundle production Atlas URIs/API keys into the repo.
+- **Auth middleware alignment:** `auth.controller` sets cookie `t`, but `auth.middleware` looks for `req.cookies.token` and stores decoded data on `req.user` while `hasAuthorization` reads `req.auth`. Update middleware to read the correct cookie name and expose the decoded token on both `req.user` and `req.auth`.
+- **Password comparison:** `UserSchema.methods.comparePassword` is async; `signin` should `await user.comparePassword(password)` to avoid false positives/negatives.
+- **Gemini config:** Instantiate `GoogleGenAI` with `{ apiKey: process.env.GEMINI_API_KEY }` and add logging for AI failures so `/api/v1/ai/:questionId` returns actionable errors.
 
 ## Validation Considerations
 - Enforce unique prompt/title combos per owner to avoid duplicates.
