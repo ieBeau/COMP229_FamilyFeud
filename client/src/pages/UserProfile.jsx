@@ -89,7 +89,7 @@ return (
         <input
             type='password'
             name='password'
-            value={formData.passwod}
+            value={formData.password}
             onChange={handleChange}
             placeholder='Enter a new password'
             required
