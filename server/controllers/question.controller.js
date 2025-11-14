@@ -27,12 +27,15 @@ const getRandomQuestion = async (req, res) => {
         const count = await QuestionModel.countDocuments();
 
         const randomIndex = Math.floor(Math.random() * count);
-        const question = await QuestionModel.findOne().skip(randomIndex);
+        const result = await QuestionModel.findOne().skip(randomIndex);
 
-        console.log({count, randomIndex})
-        console.log(question)
+        if (!result) return res.status(404).json({ message: 'Question not found' });
 
-        if (!question) return res.status(404).json({ message: 'Question not found' });
+        const question = {
+            _id: result._id,
+            question: result.question,
+            answersCount: result.answers.length
+        };
 
         res.status(200).json(question);
     } catch (error) {
