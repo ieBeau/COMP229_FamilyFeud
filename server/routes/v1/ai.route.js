@@ -1,11 +1,10 @@
 import express from 'express';
 
-import authMiddleware from '../../middlewares/auth.middleware.js';
 import aiController from '../../controllers/ai.controller.js';
 
 const router = express.Router();
 
-// Protected routes
-router.post('/:questionId', authMiddleware.requireSignin, aiController.getAiResponse);
+// Public routes
+router.post('/:questionId', aiController.getAiResponse);
 
 export default router;
