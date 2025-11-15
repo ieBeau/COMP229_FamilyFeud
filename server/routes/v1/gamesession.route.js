@@ -25,7 +25,7 @@ export default Router()
   .put('/:id/team/:teamId', authMiddleware.requireSignin, updateTeam)
   .post('/:id/reveal-answer', authMiddleware.requireSignin, revealAnswer)
   .post('/:id/add-strike', authMiddleware.requireSignin, addStrike)
-  .post('/:id/award-points', authMiddleware.requireSignin, awardPoints)
+  .post('/:id/team/:teamId/award-points', authMiddleware.requireSignin, awardPoints)
   .post('/:id/end-round', authMiddleware.requireSignin, endRound)
 
   // Admin-only routes
