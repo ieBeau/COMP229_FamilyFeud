@@ -16,7 +16,8 @@ const requireSignin = (req, res, next) => {
   if (!token) return res.json({ valid: false, user: null });
 
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decode;
     next();
   }
   catch (_) {
