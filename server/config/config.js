@@ -11,7 +11,7 @@ const config = {
 const cookieOptions = {
   httpOnly: true,
   secure: config.env === 'production',
-  sameSite: config.env === 'production' ? 'strict' : 'lax',
+  sameSite: config.env === 'production' ? 'none' : 'lax',
   maxAge: 3600000
 };
 const userBody = (user) => ({
