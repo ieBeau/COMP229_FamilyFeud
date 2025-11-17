@@ -86,7 +86,7 @@ export default {
       res.cookie('t', token, {
         httpOnly: true,
         secure: isProduction,
-        sameSite: isProduction ? 'strict' : 'lax',
+        sameSite: isProduction ? 'none' : 'lax',
         maxAge: 3600000
       });
 
