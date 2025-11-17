@@ -189,13 +189,13 @@ export default function Sessions() {
           <div className="empty-state">
             <p>No active sessions found.</p>
             <p>Create a new session to start a game.</p>
-            <button
-              type="button"
-              className="primary-button"
-              onClick={() => navigate('/sessions/create')}
-            >
-              Create New Session
-            </button>
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={() => navigate('/sessions/create')}
+          >
+            Create New Session
+          </button>
           </div>
         )}
       </PageSection>
