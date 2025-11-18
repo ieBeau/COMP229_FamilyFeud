@@ -1,3 +1,9 @@
+/**
+ * @file upload.route.js
+ * @author Alex Kachur
+ * @since 2025-11-17
+ * @purpose Avatar upload endpoint protected by auth.
+ */
 import { Router } from 'express';
 import authMiddleware from '../../middlewares/auth.middleware.js';
 import { avatarUpload, handleAvatarUpload } from '../../controllers/upload.controller.js';

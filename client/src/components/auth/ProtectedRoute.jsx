@@ -1,3 +1,9 @@
+/**
+ * @file ProtectedRoute.jsx
+ * @author Alex Kachur
+ * @since 2025-11-17
+ * @purpose Gate component that waits for auth check, then redirects unauthenticated users to sign in.
+ */
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext.js';
 

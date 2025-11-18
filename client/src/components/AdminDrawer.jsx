@@ -1,8 +1,11 @@
+/**
+ * @file AdminDrawer.jsx
+ * @author Alex Kachur
+ * @since 2025-11-17
+ * @purpose Reusable hamburger + drawer component (based on landing/game board pattern).
+ */
 import { Link } from 'react-router-dom';
 
-/**
- * Reusable hamburger + drawer component (based on landing/game board pattern).
- */
 export default function AdminDrawer({ open, onToggle, links, onCommand }) {
   return (
     <div

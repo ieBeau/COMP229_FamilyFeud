@@ -1,3 +1,9 @@
+/**
+ * @file questionSet.controller.js
+ * @author Alex Kachur
+ * @since 2025-11-17
+ * @purpose CRUD handlers for question sets.
+ */
 import QuestionSetModel from '../models/questionSet.model.js';
 
 // Get all question sets (with populated questions)

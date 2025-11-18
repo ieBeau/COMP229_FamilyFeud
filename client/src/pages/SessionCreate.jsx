@@ -1,3 +1,9 @@
+/**
+ * @file SessionCreate.jsx
+ * @author Alex Kachur
+ * @since 2025-11-17
+ * @purpose Create new multiplayer sessions with defaults, timers, and optional saved settings.
+ */
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageSection from '../components/PageSection.jsx';

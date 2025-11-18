@@ -1,3 +1,9 @@
+/**
+ * @file upload.controller.js
+ * @author Alex Kachur
+ * @since 2025-11-17
+ * @purpose Handle avatar uploads to local storage with basic validation.
+ */
 import fs from 'node:fs';
 import path from 'node:path';
 import multer from 'multer';
