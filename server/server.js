@@ -50,7 +50,6 @@ app
 
   .get(/^(?!\/api).*/, rateLimit, (_, res) => {
     res.json({ message: "Welcome to Family Feud!" });
-    // res.sendFile(path.join(process.cwd(), 'client/dist', 'index.html'));
   });
 
 const listeningPort = app.listen(config.port, (err) => {

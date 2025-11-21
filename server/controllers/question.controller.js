@@ -3,7 +3,6 @@ import QuestionModel from '../models/question.model.js';
 const getAllQuestions = async (req, res) => {
     try {
         const questions = await QuestionModel.find();
-        
         res.status(200).json(questions);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -13,9 +12,7 @@ const getAllQuestions = async (req, res) => {
 const getQuestion = async (req, res) => {
     try {
         const question = await QuestionModel.findById(req.params.id);
-
         if (!question) return res.status(404).json({ message: 'Question not found' });
-
         res.status(200).json(question);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -44,12 +41,8 @@ const clampAnswerBound = (value) => {
 
 const applyAnswerBounds = (query, minAnswers, maxAnswers) => {
     const boundsQuery = {};
-    if (minAnswers && minAnswers > 0) {
-        boundsQuery[`answers.${minAnswers - 1}`] = { $exists: true };
-    }
-    if (maxAnswers && maxAnswers >= 0) {
-        boundsQuery[`answers.${maxAnswers}`] = { $exists: false };
-    }
+    if (minAnswers && minAnswers > 0) boundsQuery[`answers.${minAnswers - 1}`] = { $exists: true };
+    if (maxAnswers && maxAnswers >= 0) boundsQuery[`answers.${maxAnswers}`] = { $exists: false };
     return Object.keys(boundsQuery).length ? { ...query, ...boundsQuery } : query;
 };
 
@@ -100,9 +93,7 @@ const getRandomQuestion = async (req, res) => {
 const createQuestion = async (req, res) => {
     try {
         const newQuestion = new QuestionModel(req.body);
-
         await newQuestion.save();
-        
         res.status(201).json(newQuestion);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -112,9 +103,7 @@ const createQuestion = async (req, res) => {
 const updateQuestion = async (req, res) => {
     try {
         const updatedQuestion = await QuestionModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!updatedQuestion) {
-            return res.status(404).json({ message: 'Question not found' });
-        }
+        if (!updatedQuestion) return res.status(404).json({ message: 'Question not found' });
         res.status(200).json(updatedQuestion);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -124,9 +113,7 @@ const updateQuestion = async (req, res) => {
 const deleteQuestion = async (req, res) => {
     try {
         const deletedQuestion = await QuestionModel.findByIdAndDelete(req.params.id);
-        
         if (!deletedQuestion) return res.status(404).json({ message: 'Question not found' });
-
         res.status(200).json({ message: 'Question deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });

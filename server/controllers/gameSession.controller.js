@@ -3,9 +3,7 @@ import QuestionModel from '../models/question.model.js';
 import { ROUND_BUCKETS } from './question.controller.js';
 
 const findTeamById = (session, teamId) =>
-  session?.teams?.find((team) =>
-    team?._id?.toString() === teamId || team?.id === teamId
-  );
+  session?.teams?.find((team) => team?._id?.toString() === teamId || team?.id === teamId);
 
 // Create a new game session
 export const createGameSession = async (req, res) => {

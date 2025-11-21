@@ -18,8 +18,8 @@ router.get('/:id', getQuestionSet);
 
 // Protected routes (require authentication)
 router.post('/', authMiddleware.requireSignin, createQuestionSet);
-router.put('/:id', authMiddleware.requireSignin, updateQuestionSet);
 router.post('/:id/questions', authMiddleware.requireSignin, addQuestionToSet);
+router.put('/:id', authMiddleware.requireSignin, updateQuestionSet);
 router.delete('/:id/questions', authMiddleware.requireSignin, removeQuestionFromSet);
 router.delete('/:id', authMiddleware.requireSignin, deleteQuestionSet);
 
