@@ -19,28 +19,14 @@ const UserSchema = new mongoose.Schema({
         data: { type: Buffer, default: null },
         contentType: { type: String, default: null }
     },
-    admin: {
-        type: Boolean,
-        default: false
-    },
-    created: {
-        type: Date,
-        default: Date.now
-    },
-    updated: {
-        type: Date,
-        default: Date.now
-    },
-    password: {
-        type: String,
-        required: "Password is required"
-    }
+    admin: { type: Boolean, default: false },
+    created: { type: Date, default: Date.now }, 
+    updated: { type: Date, default: Date.now },
+    password: { type: String, required: "Password is required" }
 });
 
 UserSchema.pre('save', async function(next) {
-    if (this.isModified('password') || this.isNew) {
-        this.password = await bcrypt.hash(this.password, 10);
-    }
+    if (this.isModified('password') || this.isNew) this.password = await bcrypt.hash(this.password, 10);
     this.updated = new Date();
     next();
 });
@@ -50,12 +36,8 @@ UserSchema.methods.comparePassword = async function(password) {
 };
 
 UserSchema.path('password').validate(function(v) {
-    if (this.password && this.password.length < 6) {
-        this.invalidate('password', 'Password must be at least 6 characters.');
-    }
-    if (this.isNew && !this.password) {
-        this.invalidate('password', 'Password is required');
-    }
+    if (this.password && this.password.length < 6) this.invalidate('password', 'Password must be at least 6 characters.');
+    if (this.isNew && !this.password) this.invalidate('password', 'Password is required');
 }, null);
 
 export default mongoose.model('User', UserSchema);

@@ -15,9 +15,7 @@ export const getAllQuestionSets = async (req, res) => {
 export const getQuestionSet = async (req, res) => {
   try {
     const questionSet = await QuestionSetModel.findById(req.params.id);
-    if (!questionSet) {
-      return res.status(404).json({ message: 'Question set not found' });
-    }
+    if (!questionSet) return res.status(404).json({ message: 'Question set not found' });
     res.status(200).json(questionSet);
   } catch (error) {
     console.error('Error fetching question set:', error);
@@ -79,9 +77,7 @@ export const updateQuestionSet = async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    if (!updatedSet) {
-      return res.status(404).json({ message: 'Question set not found' });
-    }
+    if (!updatedSet) return res.status(404).json({ message: 'Question set not found' });
 
     res.status(200).json(updatedSet);
   } catch (error) {
@@ -95,14 +91,10 @@ export const addQuestionToSet = async (req, res) => {
   try {
     const { answer, points, aliases } = req.body;
 
-    if (!answer || points === undefined || points === null) {
-      return res.status(400).json({ message: 'Answer text and points are required' });
-    }
+    if (!answer || points === undefined || points === null) return res.status(400).json({ message: 'Answer text and points are required' });
 
     const questionSet = await QuestionSetModel.findById(req.params.id);
-    if (!questionSet) {
-      return res.status(404).json({ message: 'Question set not found' });
-    }
+    if (!questionSet) return res.status(404).json({ message: 'Question set not found' });
 
     questionSet.answers.push({
       answer,
@@ -127,18 +119,12 @@ export const removeQuestionFromSet = async (req, res) => {
   try {
     const { answerId } = req.body;
 
-    if (!answerId) {
-      return res.status(400).json({ message: 'Answer ID is required' });
-    }
+    if (!answerId) return res.status(400).json({ message: 'Answer ID is required' });
 
     const questionSet = await QuestionSetModel.findById(req.params.id);
-    if (!questionSet) {
-      return res.status(404).json({ message: 'Question set not found' });
-    }
+    if (!questionSet) return res.status(404).json({ message: 'Question set not found' });
 
-    questionSet.answers = questionSet.answers.filter(
-      (entry) => entry?._id?.toString() !== answerId
-    );
+    questionSet.answers = questionSet.answers.filter((entry) => entry?._id?.toString() !== answerId);
     questionSet.updatedAt = new Date();
     await questionSet.save();
 
@@ -154,9 +140,7 @@ export const removeQuestionFromSet = async (req, res) => {
 export const deleteQuestionSet = async (req, res) => {
   try {
     const questionSet = await QuestionSetModel.findByIdAndDelete(req.params.id);
-    if (!questionSet) {
-      return res.status(404).json({ message: 'Question set not found' });
-    }
+    if (!questionSet) return res.status(404).json({ message: 'Question set not found' });
     res.status(200).json({ message: 'Question set deleted successfully' });
   } catch (error) {
     console.error('Error deleting question set:', error);

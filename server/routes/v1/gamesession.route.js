@@ -20,13 +20,13 @@ export default Router()
 
   // Protected routes
   .post('/', authMiddleware.requireSignin, createGameSession)
-  .put('/:id', authMiddleware.requireSignin, updateGameSession)
   .post('/:id/round', authMiddleware.requireSignin, startRound)
-  .put('/:id/team/:teamId', authMiddleware.requireSignin, updateTeam)
+  .post('/:id/end-round', authMiddleware.requireSignin, endRound)
   .post('/:id/reveal-answer', authMiddleware.requireSignin, revealAnswer)
   .post('/:id/team/:teamId/add-strike', authMiddleware.requireSignin, addStrike)
   .post('/:id/team/:teamId/award-points', authMiddleware.requireSignin, awardPoints)
-  .post('/:id/end-round', authMiddleware.requireSignin, endRound)
+  .put('/:id', authMiddleware.requireSignin, updateGameSession)
+  .put('/:id/team/:teamId', authMiddleware.requireSignin, updateTeam)
 
   // Admin-only routes rethink or refactor
   .get('/', authMiddleware.requireSignin, /*authMiddleware.hasAuthorization,*/ getAllGameSessions)

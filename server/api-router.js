@@ -17,5 +17,4 @@ export default (/**@type {express.Express} */app) => {
     .use('/api/v1/question-sets', questionSetRoutes)
     .use('/api/v1/gamesession', sessionRoutes)
     .use('/api/v1/ai', aiRoutes)
-
 };
