@@ -133,7 +133,7 @@ button:focus-visible {
   background: none;
   border: 1px solid rgba(226, 232, 240, 0.35);
   cursor: pointer;
-  height: 36px; /* match link height */
+  height: 36px; 
   line-height: 1;
 }
 
@@ -385,6 +385,7 @@ button:focus-visible {
 
 .form-stack input[type="text"],
 .form-stack input[type="email"],
+.form-stack input[type="number"],
 .form-stack input[type="password"],
 .form-stack select {
   width: 100%;
@@ -400,6 +401,25 @@ button:focus-visible {
 .form-grid__full input,
 .form-grid__full textarea {
   max-width: 100%;
+.form-grid input[type="text"],
+.form-grid input[type="number"],
+.form-grid select {
+  padding: 0.65rem;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: #fff;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+.form-grid textarea {
+  width: 100%;
+  max-width: 100%;
+  resize: vertical;
+  min-height: 80px;
+  max-height: 200px;
+  box-sizing: border-box;
 }
 
 .form-grid__full {
@@ -1518,6 +1538,20 @@ button:focus-visible {
 
 .link-button--destructive:hover {
   color: #b71c1c;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .form-grid input[type="text"],
+  .form-grid input[type="number"],
+  .form-grid select {
+    max-width: 100%;
+  }
+  
+  .answer-list__row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
 }
 
 @media (max-width: 900px) {
