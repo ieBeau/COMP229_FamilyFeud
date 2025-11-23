@@ -4,17 +4,20 @@
  * @since 2025-11-04
  * @purpose Provides shared chrome for host dashboard views including header navigation.
  */
+
 import { useState } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { NAV_ITEMS, AUTH_NAV_ITEMS, HOME_NAV_ITEM } from '../utils/navigation.js';
 import { useAuth } from '../components/auth/AuthContext.js';
+
+import Loader from '../components/loader/loader.jsx';
 
 export default function Layout() {
   const location = useLocation();
   const isLanding = location.pathname === '/';
   const [status, setStatus] = useState('idle');
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { signOut, isLoading, isLoggedIn } = useAuth();
 
   const handleSignOut = async () => {
     setStatus('loading');
@@ -23,16 +26,18 @@ export default function Layout() {
       // setSignOutStatus('success'); // no point setting a status that wont be seen due to navigation.
       if (success)
         navigate('/signed-out');
-      else 
+      else
         setStatus({ state: 'error', message: message || 'Checking credentials…' });
-      
+
     } catch (error) {
       setStatus('error');
       console.error('Failed to sign out', error);
     }
   };
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className={`app-shell${isLanding ? ' app-shell--landing' : ''}`}>
       {isLanding ? null : (
         <header className="app-header">
@@ -47,6 +52,7 @@ export default function Layout() {
           </div>
 
           <nav className="app-nav">
+
             <ul className="app-nav__list">
               {[HOME_NAV_ITEM, ...NAV_ITEMS].map((item) => (
                 <li key={item.path}>
@@ -56,15 +62,18 @@ export default function Layout() {
                 </li>
               ))}
             </ul>
+
             <ul className="app-nav__list app-nav__list--auth">
-              {AUTH_NAV_ITEMS.map((item) => (
+
+              {!isLoggedIn && AUTH_NAV_ITEMS.map((item) => (
                 <li key={item.path}>
                   <NavLink to={item.path} className="app-nav__link">
                     {item.label}
                   </NavLink>
                 </li>
               ))}
-              <li>
+
+              {isLoggedIn && <li>
                 <button
                   type="button"
                   className="app-nav__link app-nav__link--button"
@@ -73,33 +82,7 @@ export default function Layout() {
                 >
                   {status === 'loading' ? 'Signing Out…' : 'Sign Out'}
                 </button>
-              </li>
-              {/* TODO (Frontend): replace temporary sign-out button with auth-aware user menu. 
-
-              import { useAuth } from '../components/auth/AuthContext.js';
-              const { isLoggedIn, user } = useAuth();
-
-              {isLoggedIn ? (
-              <>
-                <li>
-                  <Link to="path" >page</Link>
-                </li>
-                <li>
-                  <Link to="path" >page</Link>
-                </li>
-              </>
-            ) : (
-              <>
-                <li>
-                  <Link to="path" >page</Link>
-                </li>
-                <li>
-                  <Link to="path" >page</Link>
-                </li>
-              </>
-            )}
-
-              */}
+              </li>}
             </ul>
           </nav>
         </header>

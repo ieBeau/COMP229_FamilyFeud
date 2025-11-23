@@ -1,0 +1,46 @@
+.spinner-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background: url('/images/logo_goodie.png') center/contain no-repeat; */
+  z-index: 1000;
+}
+
+.spinner-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(rgba(9, 180, 185, 0.7) 1px,
+      transparent 1px),
+    linear-gradient(90deg,
+      rgba(9, 180, 185, 0.7) 1px,
+      transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.2;
+  z-index: 0;
+}
+
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  border: 4px solid;
+  border-color: var(--primary-blue) transparent transparent transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
