@@ -1,3 +1,5 @@
+@import './game-theme.css';
+
 :root {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.6;
@@ -316,6 +318,7 @@ button:focus-visible {
   color: #dc2626;
 }
 
+/* Form styles */
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -325,6 +328,45 @@ button:focus-visible {
 
 .form-grid--vertical {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.form-grid input[type="text"],
+.form-grid input[type="number"],
+.form-grid select {
+  width: 100%;
+  max-width: 400px;
+   padding: 0.65rem;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: #fff; 
+  box-sizing: border-box;
+}
+
+.form-grid textarea {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.65rem;
+  resize: vertical;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: #fff; 
+  box-sizing: border-box;
+  min-height: 80px;
+  max-height: 200px;
+}
+
+/* Mobile fixes */
+@media (max-width: 768px) {
+  .form-grid input[type="text"],
+  .form-grid input[type="number"],
+  .form-grid select {
+    max-width: 100%;
+  }
+  
+  .answer-list__row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
 }
 
 .form-grid label,
@@ -342,6 +384,7 @@ button:focus-visible {
 }
 
 .form-stack input[type="text"],
+.form-stack input[type="email"],
 .form-stack input[type="number"],
 .form-stack input[type="password"],
 .form-stack select {
@@ -354,6 +397,10 @@ button:focus-visible {
   box-sizing: border-box;
 }
 
+
+.form-grid__full input,
+.form-grid__full textarea {
+  max-width: 100%;
 .form-grid input[type="text"],
 .form-grid input[type="number"],
 .form-grid select {
@@ -389,7 +436,6 @@ button:focus-visible {
   display: flex;
   gap: 0.75rem;
 }
-
 
 .form-status {
   margin: 0;
@@ -508,10 +554,10 @@ button:focus-visible {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 50% -10%, #2563eb 0%, #0f172a 60%, #020617 100%);
+  background: transparent !important; /* for .game_theme background testing */
+  /*background: radial-gradient(circle at 50% -10%, #2563eb 0%, #0f172a 60%, #020617 100%);*/
   color: #fff;
 }
-
 .landing-basic__chrome {
   position: absolute;
   top: 2rem;
@@ -527,13 +573,13 @@ button:focus-visible {
   width: 44px;
   height: 44px;
   border: none;
-  background: rgba(255, 255, 255, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15); 
+  border: 2px solid rgba(255, 255, 255, 0.3); 
   border-radius: 8px;
   display: grid;
   gap: 6px;
   cursor: pointer;
-  padding: 10px;
+  padding: 10px; 
   align-content: center; 
 }
 
@@ -549,6 +595,7 @@ button:focus-visible {
   background: #FFFFFF;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
+
 .landing-basic__menu:hover span {
   background: #93c5fd;
 }
@@ -597,7 +644,7 @@ button:focus-visible {
   letter-spacing: 0.12em;
   text-decoration: none;
   text-align: center;
-  transition: all 0.3s ease; /* ADD: smooth hover transition for all buttons */
+  transition: all 0.3s ease; 
 }
 
 .landing-basic__cta:hover{
@@ -1273,9 +1320,6 @@ button:focus-visible {
   cursor: not-allowed;
 }
 
-
-
-
 .global-error {
   padding: 1rem;
   background: #ffebee;
@@ -1326,7 +1370,6 @@ button:focus-visible {
 
 
 /* session.jsx */
-
 .sessions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -1463,10 +1506,12 @@ button:focus-visible {
   margin-left: 1rem;
 }
 
+/* TEMPORARY: Commented out broken CSS - needs proper selector */
+/*
   color: #666;
   font-size: 0.9rem;
   margin: 0.5rem 0;
-}
+*/
 
 .form-actions {
   display: flex;

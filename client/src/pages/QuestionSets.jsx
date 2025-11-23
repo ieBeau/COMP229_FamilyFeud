@@ -114,6 +114,7 @@ export default function QuestionSets() {
   }
 
   return (
+    <div className="game_theme">
     <div className="page page--stacked">
       <header className="page__header">
         <p className="eyebrow">Survey Bank</p>
@@ -282,6 +283,7 @@ export default function QuestionSets() {
           </div>
         )}
       </PageSection>
+    </div>
     </div>
   );
 }

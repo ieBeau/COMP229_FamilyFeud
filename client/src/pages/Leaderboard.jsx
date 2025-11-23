@@ -23,6 +23,8 @@ export default function Leaderboard(props) {
   ];
 
   return (
+    
+    <div className="game_theme">
     <div className="page page--centered leaderboard-page" style={{ backgroundImage: `url(${backgroundImage})` }}>
       <header className="page__header">
         <p className="eyebrow">Leaderboard</p>
@@ -51,6 +53,7 @@ export default function Leaderboard(props) {
           ))}
         </div>
       </div>
+    </div>
     </div>
   );
 }

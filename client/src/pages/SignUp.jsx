@@ -10,6 +10,7 @@ import PageSection from '../components/PageSection.jsx';
 import { useAuth } from '../components/auth/AuthContext.js';
 
 
+
 export default function SignUp() {
   const { signUp } = useAuth();
   const [formData, setFormData] = useState({ username: '', email: '', password: '', confirmPassword: '' });
@@ -52,6 +53,7 @@ export default function SignUp() {
   const isSubmitting = status.state === 'loading';
 
   return (
+    <div className="game_theme">
     <div className="page page--auth">
       <header className="page__header">
         <p className="eyebrow">Account</p>
@@ -140,6 +142,7 @@ export default function SignUp() {
           ) : null}
         </form>
       </PageSection>
+    </div>
     </div>
   );
 }

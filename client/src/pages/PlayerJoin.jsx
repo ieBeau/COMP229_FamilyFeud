@@ -10,6 +10,8 @@ import PageSection from '../components/PageSection.jsx';
 export default function PlayerJoin() {
   const navigate = useNavigate();
   return (
+    
+    <div className="game_theme">
     <div className="page page--centered">
       <header className="page__header">
         <p className="eyebrow">Contestant Lobby</p>
@@ -53,6 +55,7 @@ export default function PlayerJoin() {
         <button type="button" className="buzzer" onClick={() => navigate('/under-construction')}>Buzz</button>
         {/* TODO (Backend Team): open WebSocket channel for near-real-time buzzer latency handling. */}
       </PageSection>
+    </div>
     </div>
   );
 }

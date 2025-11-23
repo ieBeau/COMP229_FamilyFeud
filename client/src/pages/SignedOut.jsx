@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 
 export default function SignedOut() {
   return (
+    
+    <div className="game_theme">
     <div className="page page--stacked">
       <header className="page__header">
         <p className="eyebrow">Signed Out</p>
@@ -21,6 +23,7 @@ export default function SignedOut() {
         <Link to="/signin" className="menu-card__cta">Sign In</Link>
         <Link to="/" className="menu-card__cta">Go Home</Link>
       </div>
+    </div>
     </div>
   );
 }

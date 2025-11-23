@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 
 export default function NotFound() {
   return (
+    
+    <div className="game_theme">
     <div className="page page--stacked">
       <header className="page__header">
         <p className="eyebrow">Not Found</p>
@@ -20,6 +22,7 @@ export default function NotFound() {
         <span> or </span>
         <Link to="/dashboard" className="menu-card__cta">Open Dashboard</Link>
       </div>
+    </div>
     </div>
   );
 }

@@ -82,6 +82,7 @@ export default function Dashboard() {
   }
 
   return (
+    <div className="game_theme">
     <div className="page page--stacked">
       <header className="page__header">
         <p className="eyebrow">Control Center</p>
@@ -226,6 +227,7 @@ export default function Dashboard() {
           <button type="button" onClick={() => navigate('/analytics')}>View Analytics</button>
         </div>
       </PageSection>
+    </div>
     </div>
   );
 }

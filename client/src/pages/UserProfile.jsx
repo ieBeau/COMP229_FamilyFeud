@@ -71,6 +71,7 @@ export default function UserProfile() {
     const isSubmitting = status.state === 'loading';
 
     return (
+        <div className="game_theme">
         <div className='page page--auth'>
             <header className='page__header'>
                 <p className='eyebrow'>Host Account</p>
@@ -151,6 +152,7 @@ export default function UserProfile() {
                     </form> 
                 </div>
             </PageSection>
+        </div>
         </div>
     ); 
 }

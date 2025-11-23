@@ -92,6 +92,7 @@ export default function Sessions() {
   }
 
   return (
+    <div className="game_theme">
     <div className="page page--stacked">
       <header className="page__header">
         <p className="eyebrow">Live Control</p>
@@ -210,6 +211,7 @@ export default function Sessions() {
           <button type="button" onClick={() => navigate('/sessions/archive')}>Archive Session</button>
         </div>
       </PageSection>
+    </div>
     </div>
   );
 }

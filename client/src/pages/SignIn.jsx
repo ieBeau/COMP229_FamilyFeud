@@ -43,6 +43,7 @@ export default function SignIn() {
   const isSubmitting = status.state === 'loading';
 
   return (
+    <div className="game_theme">
     <div className="page page--auth">
       <header className="page__header">
         <p className="eyebrow">Account</p>
@@ -101,6 +102,7 @@ export default function SignIn() {
           ) : null}
         </form>
       </PageSection>
+    </div>
     </div>
   );
 }
