@@ -7,6 +7,7 @@ import { auth } from '../../utils/api';
 export default function AuthProvider({ children }) {
   const
     [isLoggedIn, setIsLoggedIn] = useState(false),
+    [isLoading, setIsLoading] = useState(true),
     [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function AuthProvider({ children }) {
         setIsLoggedIn(false);
         setUser(null);
       };
+      setIsLoading(false);
     };
     checkSession();
   }, []);
@@ -82,7 +84,7 @@ export default function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, user, setUser, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ isLoading, isLoggedIn, user, setUser, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );

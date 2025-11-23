@@ -4,17 +4,20 @@
  * @since 2025-11-04
  * @purpose Provides shared chrome for host dashboard views including header navigation.
  */
+
 import { useState } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { NAV_ITEMS, AUTH_NAV_ITEMS, HOME_NAV_ITEM } from '../utils/navigation.js';
 import { useAuth } from '../components/auth/AuthContext.js';
+
+import Loader from '../components/loader/loader.jsx';
 
 export default function Layout() {
   const location = useLocation();
   const isLanding = location.pathname === '/';
   const [status, setStatus] = useState('idle');
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { signOut, isLoading } = useAuth();
 
   const handleSignOut = async () => {
     setStatus('loading');
@@ -23,16 +26,18 @@ export default function Layout() {
       // setSignOutStatus('success'); // no point setting a status that wont be seen due to navigation.
       if (success)
         navigate('/signed-out');
-      else 
+      else
         setStatus({ state: 'error', message: message || 'Checking credentials…' });
-      
+
     } catch (error) {
       setStatus('error');
       console.error('Failed to sign out', error);
     }
   };
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className={`app-shell${isLanding ? ' app-shell--landing' : ''}`}>
       {isLanding ? null : (
         <header className="app-header">
