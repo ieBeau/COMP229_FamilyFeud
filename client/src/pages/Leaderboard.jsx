@@ -17,7 +17,7 @@ export default function Leaderboard(props) {
       setLoading(true);
       const data = await getLeaderboard();
       setLeaderboard(data);
-      console.log("Leaderboard data:", data);
+      
       setError(null);
     } catch (error) {
       console.error("Failed to fetch leaderboard:", error);
