@@ -51,7 +51,7 @@ export default function Accounts() {
                   <span>Date Created</span>
                   <span>Actions</span>
                 </div>
-                {users.slice(0, 20).map((user) => (
+                {users?.slice(0, 20).map((user) => (
                   <div key={user._id || user.id} className="table-placeholder__row" style={{ color: user.admin ? 'yellow' : 'white' }}>
                     <img className='table-placeholder__avatar'
                       src={typeof user.image === 'string' ? user.image : profileIcon}

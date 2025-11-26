@@ -710,8 +710,14 @@ button:focus-visible {
   border-radius: 8px;
   color: #e2e8f0;
 }
+
 .landing-basic__drawer-list a:hover {
   background: rgba(148, 163, 184, 0.15);
+}
+
+.landing-basic__drawer-list .landing-basic__drawer-item--active a {
+  color: white;
+  background: rgba(110, 160, 229, 0.15);
 }
 
 @media (max-width: 768px) {

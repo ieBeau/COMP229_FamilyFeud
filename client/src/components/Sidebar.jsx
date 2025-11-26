@@ -6,18 +6,25 @@
  * @purpose Sidebar component for navigation and additional options.
 */
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { PRIMARY_ADMIN_NAV_LINKS, PRIMARY_USER_NAV_LINKS } from "../utils/navigation";
+import { PRIMARY_ADMIN_NAV_LINKS, PRIMARY_AUTH_NAV_LINKS, PRIMARY_USER_NAV_LINKS } from "../utils/navigation";
 import { useAuth } from "./auth/AuthContext";
 
 export default function Sidebar() {
 
-    const { user } = useAuth();
+    const { user, signOut } = useAuth();
+    
+    const navigate = useNavigate();
     
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => setMenuOpen((v) => !v);
     const closeMenu = () => setMenuOpen(false);
+
+    const handleSignOut = () => {
+        signOut();
+        navigate('/');
+    }
 
     return (
         <>
@@ -48,26 +55,62 @@ export default function Sidebar() {
                 </button>
                 <ul className="landing-basic__drawer-list">
                     {
-                        (user?.admin ? PRIMARY_ADMIN_NAV_LINKS : PRIMARY_USER_NAV_LINKS).map(link => (
-                            <li key={link.path}>
-                            <Link to={link.path} onClick={closeMenu}>
-                                {link.label}
-                            </Link>
+                        !user 
+                        ? PRIMARY_AUTH_NAV_LINKS.map(link => (
+                                <li key={link.path}
+                                    className={(window.location.pathname === link.path || window.location.pathname.startsWith(link.path + '/')) ? "landing-basic__drawer-item landing-basic__drawer-item--active" : "landing-basic__drawer-item"}
+                                    aria-current={(window.location.pathname === link.path || window.location.pathname.startsWith(link.path + '/')) ? "page" : undefined}
+                                >
+                                    <Link to={link.path} onClick={closeMenu}>
+                                        {link.label}
+                                    </Link>
+                                </li>
+                            ))
+                        : <>
+                            {
+                                PRIMARY_USER_NAV_LINKS.map(link => (
+                                    <li key={link.path}
+                                        className={(window.location.pathname === link.path || window.location.pathname.startsWith(link.path + '/')) ? "landing-basic__drawer-item landing-basic__drawer-item--active" : "landing-basic__drawer-item"}
+                                        aria-current={(window.location.pathname === link.path || window.location.pathname.startsWith(link.path + '/')) ? "page" : undefined}
+                                    >
+                                        <Link to={link.path} onClick={closeMenu}>
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))
+                            }
+                            {
+                                !user?.admin 
+                                ? null 
+                                : <>
+                                    <li>
+                                        <h2>Admin</h2>
+                                    </li>
+                                    {
+                                        PRIMARY_ADMIN_NAV_LINKS.map(link => (
+                                            <li key={link.path}
+                                                className={(window.location.pathname === link.path || window.location.pathname.startsWith(link.path + '/')) ? "landing-basic__drawer-item landing-basic__drawer-item--active" : "landing-basic__drawer-item"}
+                                                aria-current={(window.location.pathname === link.path || window.location.pathname.startsWith(link.path + '/')) ? "page" : undefined}
+                                            >
+                                                <Link to={link.path} onClick={closeMenu}>
+                                                    {link.label}
+                                                </Link>
+                                            </li>
+                                        ))
+                                    }
+                                </> 
+                            }
+                            <li>
+                                <button
+                                    type="button"
+                                    className="landing-basic__drawer-link landing-basic__drawer-link--button"
+                                    onClick={handleSignOut}
+                                >
+                                    Sign Out
+                                </button>
                             </li>
-                        ))
+                        </>
                     }
-                <li>
-                    <button
-                        type="button"
-                        className="landing-basic__drawer-link landing-basic__drawer-link--button"
-                        onClick={() => {
-                            closeMenu();
-                            navigate('/signed-out');
-                        }}
-                        >
-                        Sign Out
-                    </button>
-                    </li>
                 </ul>
             </nav>
         </>

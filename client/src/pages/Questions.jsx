@@ -150,7 +150,7 @@ export default function Questions() {
                 <span>Updated</span>
                 <span>Actions</span>
               </div>
-              {questions.slice(0, 20).map((question) => (
+              {questions?.slice(0, 20).map((question) => (
                 <div key={question._id || question.id} className="table-placeholder__row">
                   <span>{question.text}</span>
                   <span>{question.difficulty || 'None'}</span>
