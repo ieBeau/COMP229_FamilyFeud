@@ -24,10 +24,8 @@ export default function Layout() {
     try {
       const { success, message } = await signOut();
       // setSignOutStatus('success'); // no point setting a status that wont be seen due to navigation.
-      if (success)
-        navigate('/signed-out');
-      else
-        setStatus({ state: 'error', message: message || 'Checking credentials…' });
+      if (success) navigate('/signed-out');
+      else setStatus({ state: 'error', message: message || 'Checking credentials…' });
 
     } catch (error) {
       setStatus('error');
