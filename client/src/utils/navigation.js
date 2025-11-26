@@ -80,10 +80,10 @@ export const PRIMARY_USER_NAV_LINKS = [HOME_NAV_ITEM, ...NAV_USER_ITEMS];
 export const PRIMARY_ADMIN_NAV_LINKS = [HOME_NAV_ITEM, ...NAV_USER_ITEMS, ...NAV_ADMIN_ITEMS, ...AUTH_NAV_ITEMS];
 
 /**
- * Returns menu entries that should render as cards on the home dashboard.
- * @returns {Array} menu configuration excluding the home overview card.
+ * Returns user-specific navigation items to render as cards on the dashboard.
+ * @returns {Array} User dashboard navigation items (excluding the home overview card).
  */
-export function getDashboardCards() {
+export function getUserDashboardCards() {
     return NAV_USER_ITEMS;
 }
 
