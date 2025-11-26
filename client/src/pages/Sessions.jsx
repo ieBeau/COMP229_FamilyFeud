@@ -1,13 +1,21 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import PageSection from '../components/PageSection.jsx';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { PRIMARY_NAV_LINKS } from '../utils/navigation.js';
 import { apiFetch } from '../api/api.js';
+
+import PageSection from '../components/PageSection.jsx';
 
 export default function Sessions() {
   const navigate = useNavigate();
+
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [questionSets, setQuestionSets] = useState([]);
+  
+  const [menuOpen, setMenuOpen] = useState(false);
+  const toggleMenu = () => setMenuOpen((v) => !v);
+  const closeMenu = () => setMenuOpen(false);
 
   // Fetch sessions and question sets
   useEffect(() => {
@@ -97,125 +105,160 @@ export default function Sessions() {
 
   return (
     <div className="game_theme">
-    <div className="page page--stacked">
-      <header className="page__header">
-        <p className="eyebrow">Live Control</p>
-        <h2>Sessions</h2>
-        <p>Oversee lobbies, launch rounds, and keep scores synchronized.</p>
+      <header className="landing-basic__chrome">
+        <button
+          type="button"
+          className="landing-basic__menu"
+          aria-label="Open navigation"
+          aria-controls="landing-drawer"
+          aria-expanded={menuOpen}
+          onClick={toggleMenu}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </header>
 
-      <PageSection
-        title="Session Lobby"
-        description="Use this control panel to advance rounds and manage teams."
-        actions={<button type="button" onClick={() => navigate('/sessions/create')}>Create New Session</button>}
-      >
-        {sessions && Array.isArray(sessions) ? (
-          <div className="sessions-grid">
-            {sessions.map((session) => {
-              const questionSetTitle = getQuestionSetTitle(session.questionSetId);
+      <div className="page page--stacked">
+        <header className="page__header">
+          <p className="eyebrow">Live Control</p>
+          <h2>Sessions</h2>
+          <p>Oversee lobbies, launch rounds, and keep scores synchronized.</p>
+        </header>
 
-              return (
-                <article key={session.id} className="session-card">
-                  <header className="session-card__header">
-                    <div>
-                      <p className="session-card__code">Code: {session.accessCode}</p>
-                      <h3>{questionSetTitle}</h3>
-                    </div>
-                    <span className={`session-card__status status-${session.status}`}>
-                      {session.status}
-                    </span>
-                  </header>
+        <PageSection
+          title="Session Lobby"
+          description="Use this control panel to advance rounds and manage teams."
+          actions={<button type="button" onClick={() => navigate('/sessions/create')}>Create New Session</button>}
+        >
+          {sessions && Array.isArray(sessions) ? (
+            <div className="sessions-grid">
+              {sessions.map((session) => {
+                const questionSetTitle = getQuestionSetTitle(session.questionSetId);
 
-                  <dl className="session-card__meta">
-                    <div>
-                      <dt>Round</dt>
-                      <dd>{session.currentRound !== undefined ? session.currentRound + 1 : 'Not started'}</dd>
-                    </div>
-                    <div>
-                      <dt>Teams</dt>
-                      <dd>
-                        {session.teams && session.teams.length > 0
-                          ? session.teams.map((team) => `${team.name} (${team.score || 0})`).join(' vs ')
-                          : 'No teams'}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt>Updated</dt>
-                      <dd>
-                        {session.updatedAt
-                          ? new Date(session.updatedAt).toLocaleString()
-                          : 'Never'}
-                      </dd>
-                    </div>
-                  </dl>
+                return (
+                  <article key={session.id} className="session-card">
+                    <header className="session-card__header">
+                      <div>
+                        <p className="session-card__code">Code: {session.accessCode}</p>
+                        <h3>{questionSetTitle}</h3>
+                      </div>
+                      <span className={`session-card__status status-${session.status}`}>
+                        {session.status}
+                      </span>
+                    </header>
 
-                  <div className="session-card__actions">
-                    <button
-                      type="button"
-                      className="action-button"
-                      onClick={() => handleAction(session.id, 'reveal-answer')}
-                    >
-                      Reveal Answer
-                    </button>
-                    <button
-                      type="button"
-                      className="action-button"
-                      onClick={() => handleAction(session.id, 'add-strike')}
-                    >
-                      Add Strike
-                    </button>
-                    <button
-                      type="button"
-                      className="action-button"
-                      onClick={() => handleAction(session.id, 'award-points')}
-                    >
-                      Award Points
-                    </button>
-                    <button
-                      type="button"
-                      className="action-button"
-                      onClick={() => handleAction(session.id, 'end-round')}
-                    >
-                      End Round
-                    </button>
-                    <button
-                      type="button"
-                      className="action-button view-button"
-                      onClick={() => navigate(`/sessions/${session.id}`)}
-                    >
-                      View Details
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
+                    <dl className="session-card__meta">
+                      <div>
+                        <dt>Round</dt>
+                        <dd>{session.currentRound !== undefined ? session.currentRound + 1 : 'Not started'}</dd>
+                      </div>
+                      <div>
+                        <dt>Teams</dt>
+                        <dd>
+                          {session.teams && session.teams.length > 0
+                            ? session.teams.map((team) => `${team.name} (${team.score || 0})`).join(' vs ')
+                            : 'No teams'}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Updated</dt>
+                        <dd>
+                          {session.updatedAt
+                            ? new Date(session.updatedAt).toLocaleString()
+                            : 'Never'}
+                        </dd>
+                      </div>
+                    </dl>
+
+                    <div className="session-card__actions">
+                      <button
+                        type="button"
+                        className="action-button"
+                        onClick={() => handleAction(session.id, 'reveal-answer')}
+                      >
+                        Reveal Answer
+                      </button>
+                      <button
+                        type="button"
+                        className="action-button"
+                        onClick={() => handleAction(session.id, 'add-strike')}
+                      >
+                        Add Strike
+                      </button>
+                      <button
+                        type="button"
+                        className="action-button"
+                        onClick={() => handleAction(session.id, 'award-points')}
+                      >
+                        Award Points
+                      </button>
+                      <button
+                        type="button"
+                        className="action-button"
+                        onClick={() => handleAction(session.id, 'end-round')}
+                      >
+                        End Round
+                      </button>
+                      <button
+                        type="button"
+                        className="action-button view-button"
+                        onClick={() => navigate(`/sessions/${session.id}`)}
+                      >
+                        View Details
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="empty-state">
+              <p>No active sessions found.</p>
+              <p>Create a new session to start a game.</p>
+              <button
+                type="button"
+                className="primary-button"
+                onClick={() => navigate('/sessions/create')}
+              >
+                Create New Session
+              </button>
+            </div>
+          )}
+        </PageSection>
+
+        <PageSection
+          title="Session Utilities"
+          description="Tools for moderators and scorekeepers."
+        >
+          <div className="action-grid">
+            <button type="button" onClick={() => navigate('/sessions/create')}>Generate New Access Code</button>
+            <button type="button" onClick={() => navigate('/sessions/logs')}>Download Session Log</button>
+            <button type="button" onClick={() => navigate('/sessions/archive')}>Archive Session</button>
           </div>
-        ) : (
-          <div className="empty-state">
-            <p>No active sessions found.</p>
-            <p>Create a new session to start a game.</p>
-            <button
-              type="button"
-              className="primary-button"
-              onClick={() => navigate('/sessions/create')}
-            >
-              Create New Session
-            </button>
-          </div>
-        )}
-      </PageSection>
-
-      <PageSection
-        title="Session Utilities"
-        description="Tools for moderators and scorekeepers."
+        </PageSection>
+      </div>
+      {/* Simple slide-out drawer for quick navigation while on the landing view. */}
+      {menuOpen ? <button className="landing-basic__backdrop" aria-label="Close menu" onClick={closeMenu} /> : null}
+      <nav
+        id="landing-drawer"
+        className={"landing-basic__drawer" + (menuOpen ? " landing-basic__drawer--open" : "")}
+        aria-hidden={!menuOpen}
       >
-        <div className="action-grid">
-          <button type="button" onClick={() => navigate('/sessions/create')}>Generate New Access Code</button>
-          <button type="button" onClick={() => navigate('/sessions/logs')}>Download Session Log</button>
-          <button type="button" onClick={() => navigate('/sessions/archive')}>Archive Session</button>
-        </div>
-      </PageSection>
-    </div>
+        <button type="button" className="landing-basic__drawer-close" onClick={closeMenu} aria-label="Close menu">
+          ×
+        </button>
+        <ul className="landing-basic__drawer-list">
+          {PRIMARY_NAV_LINKS.map(link => (
+            <li key={link.path}>
+              <Link to={link.path} onClick={closeMenu}>
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 }

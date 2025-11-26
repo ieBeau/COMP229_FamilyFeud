@@ -5,16 +5,24 @@
  * @purpose Manage question sets for Family Feud rounds.
  */
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import PageSection from '../components/PageSection.jsx';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { PRIMARY_NAV_LINKS } from '../utils/navigation.js';
 import { apiFetch } from '../api/api.js';
+
+import PageSection from '../components/PageSection.jsx';
 
 export default function QuestionSets() {
   const navigate = useNavigate();
+
   const [questionSets, setQuestionSets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [answers, setAnswers] = useState([{ answer: '', points: '' }]);
+  
+  const [menuOpen, setMenuOpen] = useState(false);
+  const toggleMenu = () => setMenuOpen((v) => !v);
+  const closeMenu = () => setMenuOpen(false);
 
   // Fetch question sets from backend
   useEffect(() => {
@@ -124,196 +132,230 @@ export default function QuestionSets() {
 
   return (
     <div className="game_theme">
-    <div className="page page--wide question-sets-page">
-      <header className="page__header">
-        <p className="eyebrow">Survey Bank</p>
-        <h2>Question Sets</h2>
-        <p>Curate survey prompts and answer lists for upcoming episodes.</p>
-      </header>
-
-      {error && (
-        <div className="error-message">
-          <p>{error}</p>
-          <button onClick={() => window.location.reload()}>Retry</button>
-        </div>
-      )}
-
-      <PageSection
-        title="Create Question Set"
-        description="Add a new survey prompt, answers, and optional tags."
-      >
-        <form
-          className="form-grid form-grid--wide"
-          onSubmit={handleSubmit}
+      <header className="landing-basic__chrome">
+        <button
+          type="button"
+          className="landing-basic__menu"
+          aria-label="Open navigation"
+          aria-controls="landing-drawer"
+          aria-expanded={menuOpen}
+          onClick={toggleMenu}
         >
-          <label>
-            Title
-            <input type="text" name="title" placeholder="Family Dinner Staples" required />
-          </label>
+          <span />
+          <span />
+          <span />
+        </button>
+      </header>
+      <div className="page page--wide question-sets-page">
+        <header className="page__header">
+          <p className="eyebrow">Survey Bank</p>
+          <h2>Question Sets</h2>
+          <p>Curate survey prompts and answer lists for upcoming episodes.</p>
+        </header>
 
-          <label>
-            Category
-            <input type="text" name="category" placeholder="Lifestyle" />
-          </label>
-
-          <label className="form-grid__full">
-            Prompt
-            <textarea name="prompt" rows="3" placeholder="Name something you might find..." required />
-          </label>
-
-          <label>
-            Round Type
-            <select name="roundType" defaultValue="single">
-              <option value="single">Single Points</option>
-              <option value="double">Double Points</option>
-              <option value="triple">Triple Points</option>
-              <option value="fast">Fast Money</option>
-            </select>
-          </label>
-
-          <label>
-            Tags (comma separated)
-            <input type="text" name="tags" placeholder="holiday, food" />
-          </label>
-
-          <div className="form-grid__full">
-            <p className="form-help">Add answers below. Points should mirror percentages from the survey source.</p>
-          </div>
-
-          <div className="form-actions">
-            <button
-              type="button"
-              className="secondary-button"
-              onClick={addAnswer}
-              disabled={answers.length >= 8}
-            >
-              {answers.length >= 8 ? 'Max Answers Reached' : 'Add Answer'}
-            </button>
-            <button 
-              type="button" 
-              className="reset-button"
-              onClick={() => setAnswers([{ answer: '', points: '' }])}
-            >
-              Reset
-            </button>
-            <button type="submit" className="primary-button">
-              Save Question Set
-            </button>
-          </div>
-
-          <div className="answer-list">
-            {answers.map((answer, index) => (
-              <div key={index} className="answer-list__row">
-                <input
-                  type="text"
-                  value={answer.answer}
-                  onChange={(e) => handleAnswerChange(index, 'answer', e.target.value)}
-                  placeholder={`Answer ${index + 1}`}
-                  required
-                />
-                <input
-                  type="number"
-                  value={answer.points}
-                  onChange={(e) => handleAnswerChange(index, 'points', e.target.value)}
-                  onInput={(e) => {
-                    if (e.target.value > 99) e.target.value = 99;
-                    if (e.target.value < 0) e.target.value = 0;
-                  }}
-                  placeholder="Points"
-                  min="0"
-                  max="99"
-                  required
-                />
-                <button
-                  type="button"
-                  className="remove-answer-button"
-                  onClick={() => removeAnswer(index)} // This should be the current row's index
-                  aria-label="Remove answer"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
-        </form>
-      </PageSection>
-
-      <PageSection
-        title="Existing Sets"
-        description="Edit or retire question sets as your content evolves."
-      >
-        {questionSets.length === 0 ? (
-          <div className="empty-state">
-            <p>No question sets found.</p>
-            <p>Create your first question set to organize your game content.</p>
-          </div>
-        ) : (
-          <div className="table-placeholder">
-            <div className="table-placeholder__row table-placeholder__row--head">
-              <span>Title</span>
-              <span>Category</span>
-              <span>Round Type</span>
-              <span>Answers</span>
-              <span>Updated</span>
-              <span>Actions</span>
-            </div>
-            {questionSets.map((set) => (
-              <div key={set._id || set.id} className="table-placeholder__row">
-                <span>{set.title}</span>
-                <span>{set.category || 'None'}</span>
-                <span>{set.roundType}</span>
-                <span>{set.answers?.length || 0}</span>
-                <span>{set.updatedAt ? new Date(set.updatedAt).toLocaleDateString() : 'Unknown'}</span>
-                <span className="table-placeholder__actions">
-                  <button
-                    type="button"
-                    className="link-button"
-                    onClick={() => navigate(`/question-sets/${set._id || set.id}`)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    className="link-button link-button--destructive"
-                    onClick={async () => {
-                      if (window.confirm('Are you sure you want to delete this question set?')) {
-                        try {
-                          const response = await fetch(`/api/v1/question-sets/${set._id || set.id}`, {
-                            method: 'DELETE',
-                            credentials: 'include',
-                            headers: { 'Content-Type': 'application/json' },
-                          });
-
-                          if (!response.ok) {
-                            const errorData = await response.json().catch(() => ({}));
-                            throw new Error(errorData.message || 'Failed to delete question set');
-                          }
-
-                          // Refresh the list after deletion
-                          const updatedResponse = await fetch('/api/v1/question-sets', {
-                            credentials: 'include',
-                            headers: { 'Content-Type': 'application/json' },
-                          });
-
-                          if (updatedResponse.ok) {
-                            const updatedData = await updatedResponse.json();
-                            setQuestionSets(updatedData);
-                          }
-                        } catch (err) {
-                          alert(`Error: ${err.message}`);
-                        }
-                      }
-                    }}
-                  >
-                    Delete
-                  </button>
-                </span>
-              </div>
-            ))}
+        {error && (
+          <div className="error-message">
+            <p>{error}</p>
+            <button onClick={() => window.location.reload()}>Retry</button>
           </div>
         )}
-      </PageSection>
-    </div>
+
+        <PageSection
+          title="Create Question Set"
+          description="Add a new survey prompt, answers, and optional tags."
+        >
+          <form
+            className="form-grid form-grid--wide"
+            onSubmit={handleSubmit}
+          >
+            <label>
+              Title
+              <input type="text" name="title" placeholder="Family Dinner Staples" required />
+            </label>
+
+            <label>
+              Category
+              <input type="text" name="category" placeholder="Lifestyle" />
+            </label>
+
+            <label className="form-grid__full">
+              Prompt
+              <textarea name="prompt" rows="3" placeholder="Name something you might find..." required />
+            </label>
+
+            <label>
+              Round Type
+              <select name="roundType" defaultValue="single">
+                <option value="single">Single Points</option>
+                <option value="double">Double Points</option>
+                <option value="triple">Triple Points</option>
+                <option value="fast">Fast Money</option>
+              </select>
+            </label>
+
+            <label>
+              Tags (comma separated)
+              <input type="text" name="tags" placeholder="holiday, food" />
+            </label>
+
+            <div className="form-grid__full">
+              <p className="form-help">Add answers below. Points should mirror percentages from the survey source.</p>
+            </div>
+
+            <div className="form-actions">
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={addAnswer}
+                disabled={answers.length >= 8}
+              >
+                {answers.length >= 8 ? 'Max Answers Reached' : 'Add Answer'}
+              </button>
+              <button 
+                type="button" 
+                className="reset-button"
+                onClick={() => setAnswers([{ answer: '', points: '' }])}
+              >
+                Reset
+              </button>
+              <button type="submit" className="primary-button">
+                Save Question Set
+              </button>
+            </div>
+
+            <div className="answer-list">
+              {answers.map((answer, index) => (
+                <div key={index} className="answer-list__row">
+                  <input
+                    type="text"
+                    value={answer.answer}
+                    onChange={(e) => handleAnswerChange(index, 'answer', e.target.value)}
+                    placeholder={`Answer ${index + 1}`}
+                    required
+                  />
+                  <input
+                    type="number"
+                    value={answer.points}
+                    onChange={(e) => handleAnswerChange(index, 'points', e.target.value)}
+                    onInput={(e) => {
+                      if (e.target.value > 99) e.target.value = 99;
+                      if (e.target.value < 0) e.target.value = 0;
+                    }}
+                    placeholder="Points"
+                    min="0"
+                    max="99"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="remove-answer-button"
+                    onClick={() => removeAnswer(index)} // This should be the current row's index
+                    aria-label="Remove answer"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          </form>
+        </PageSection>
+
+        <PageSection
+          title="Existing Sets"
+          description="Edit or retire question sets as your content evolves."
+        >
+          {questionSets.length === 0 ? (
+            <div className="empty-state">
+              <p>No question sets found.</p>
+              <p>Create your first question set to organize your game content.</p>
+            </div>
+          ) : (
+            <div className="table-placeholder">
+              <div className="table-placeholder__row table-placeholder__row--head">
+                <span>Title</span>
+                <span>Category</span>
+                <span>Round Type</span>
+                <span>Answers</span>
+                <span>Updated</span>
+                <span>Actions</span>
+              </div>
+              {questionSets.map((set) => (
+                <div key={set._id || set.id} className="table-placeholder__row">
+                  <span>{set.title}</span>
+                  <span>{set.category || 'None'}</span>
+                  <span>{set.roundType}</span>
+                  <span>{set.answers?.length || 0}</span>
+                  <span>{set.updatedAt ? new Date(set.updatedAt).toLocaleDateString() : 'Unknown'}</span>
+                  <span className="table-placeholder__actions">
+                    <button
+                      type="button"
+                      className="link-button"
+                      onClick={() => navigate(`/question-sets/${set._id || set.id}`)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="link-button link-button--destructive"
+                      onClick={async () => {
+                        if (window.confirm('Are you sure you want to delete this question set?')) {
+                          try {
+                            const response = await fetch(`/api/v1/question-sets/${set._id || set.id}`, {
+                              method: 'DELETE',
+                              credentials: 'include',
+                              headers: { 'Content-Type': 'application/json' },
+                            });
+
+                            if (!response.ok) {
+                              const errorData = await response.json().catch(() => ({}));
+                              throw new Error(errorData.message || 'Failed to delete question set');
+                            }
+
+                            // Refresh the list after deletion
+                            const updatedResponse = await fetch('/api/v1/question-sets', {
+                              credentials: 'include',
+                              headers: { 'Content-Type': 'application/json' },
+                            });
+
+                            if (updatedResponse.ok) {
+                              const updatedData = await updatedResponse.json();
+                              setQuestionSets(updatedData);
+                            }
+                          } catch (err) {
+                            alert(`Error: ${err.message}`);
+                          }
+                        }
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </PageSection>
+      </div>
+      {/* Simple slide-out drawer for quick navigation while on the landing view. */}
+      {menuOpen ? <button className="landing-basic__backdrop" aria-label="Close menu" onClick={closeMenu} /> : null}
+      <nav
+        id="landing-drawer"
+        className={"landing-basic__drawer" + (menuOpen ? " landing-basic__drawer--open" : "")}
+        aria-hidden={!menuOpen}
+      >
+        <button type="button" className="landing-basic__drawer-close" onClick={closeMenu} aria-label="Close menu">
+          ×
+        </button>
+        <ul className="landing-basic__drawer-list">
+          {PRIMARY_NAV_LINKS.map(link => (
+            <li key={link.path}>
+              <Link to={link.path} onClick={closeMenu}>
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 }

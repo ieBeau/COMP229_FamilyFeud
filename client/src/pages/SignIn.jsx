@@ -28,11 +28,9 @@ export default function SignIn() {
     setStatus({ state: 'loading', message: 'Checking credentials…' });
     try {
       const { success, message } = await signIn(formData.email, formData.password);
-      if (success) {
-        navigate('/');
-      } else {
-        setStatus({ state: 'error', message: message || 'SignIn Error…' });
-      }
+
+      if (success) navigate('/dashboard');
+      else setStatus({ state: 'error', message: message || 'SignIn Error…' });
     }
     catch (error) {
       console.debug("SignIn: ", error)

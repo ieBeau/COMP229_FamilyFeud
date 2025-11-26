@@ -6,10 +6,14 @@
 */
 
 import { useEffect, useState } from 'react';
-import PageSection from '../components/PageSection.jsx';
-import profileIcon from '../assets/Icon.png';
+import { Link } from 'react-router-dom';
+
+import { PRIMARY_NAV_LINKS } from '../utils/navigation.js';
 import { apiFetch } from '../api/api.js';
 import { useAuth } from '../components/auth/AuthContext.js';
+
+import PageSection from '../components/PageSection.jsx';
+import profileIcon from '../assets/Icon.png';
 
 export default function UserProfile() {
     const { user, setUser } = useAuth();
@@ -24,6 +28,10 @@ export default function UserProfile() {
         state: 'idle', 
         message: '',
     });
+    
+    const [menuOpen, setMenuOpen] = useState(false);
+    const toggleMenu = () => setMenuOpen((v) => !v);
+    const closeMenu = () => setMenuOpen(false);
 
     function handleChange(e) {
         const { name, value, files } = e.target;
@@ -72,84 +80,118 @@ export default function UserProfile() {
 
     return (
         <div className="game_theme">
-        <div className='page page--auth'>
-            <header className='page__header'>
-                <p className='eyebrow'>Host Account</p>
-                <h2>My Profile</h2>
-                <p>View and update your account details.</p>
+            <header className="landing-basic__chrome">
+                <button
+                type="button"
+                className="landing-basic__menu"
+                aria-label="Open navigation"
+                aria-controls="landing-drawer"
+                aria-expanded={menuOpen}
+                onClick={toggleMenu}
+                >
+                <span />
+                <span />
+                <span />
+                </button>
             </header>
+            <div className='page page--auth'>
+                <header className='page__header'>
+                    <p className='eyebrow'>Host Account</p>
+                    <h2>My Profile</h2>
+                    <p>View and update your account details.</p>
+                </header>
 
-            <PageSection
-                title='Profile Information'
-                description='Update your account details below.'
-            >                
-                    <div className='profile-avatar'>
-                        <img
-                            src={typeof user.image === 'string' ? user.image : profileIcon}
-                            id="profile-avatar-img"
-                            alt='Profile Avatar'
-                            className='avatar-img'
-                        />
-                        <input 
-                            id='profile-image-input'
-                            type='file'
-                            name='image'
-                            accept="image/*"
-                            onChange={handleImageSearch}
-                        />
-                        <label className='profile-avatar-button' htmlFor="profile-image-input">
-                            Choose Image
-                        </label>                   
-
-
-                    <form className='form-stack form-stack--no-card' onSubmit={handleSubmit}>
-                        <label>
-                            Username
-                            <input
-                                type='text'
-                                name='username'
-                                value={form.username}
-                                onChange={handleChange}
-                                placeholder='Enter your username'
-                                required
-                                disabled={isSubmitting}
+                <PageSection
+                    title='Profile Information'
+                    description='Update your account details below.'
+                >                
+                        <div className='profile-avatar'>
+                            <img
+                                src={typeof user.image === 'string' ? user.image : profileIcon}
+                                id="profile-avatar-img"
+                                alt='Profile Avatar'
+                                className='avatar-img'
                             />
-                        </label>
-
-                        <label>
-                            Password
-                            <input
-                                type='password'
-                                name='password'
-                                value={form.password}
-                                onChange={handleChange}
-                                placeholder='Enter a new password'
-                                required
-                                disabled={isSubmitting}
+                            <input 
+                                id='profile-image-input'
+                                type='file'
+                                name='image'
+                                accept="image/*"
+                                onChange={handleImageSearch}
                             />
-                        </label>
+                            <label className='profile-avatar-button' htmlFor="profile-image-input">
+                                Choose Image
+                            </label>                   
 
-                        <div className='form-actions'>
-                            <button type='submit' disabled={status.state === 'loading'}>
-                                {status.state === 'loading' ? 'Saving...' : 'Save Changes'}
-                            </button>
-                        </div>
 
-                        {status.state !== 'idle' && (
-                            <p
-                                className={
-                                    'form-status ' +
-                                        (status.state === 'error' ? 'form-status--error' : 'form-status--success')
-                                        }
-                                    role='status'
-                            >
-                                {status.message}
-                            </p>
-                        )}
-                    </form> 
-                </div>
-            </PageSection>
-        </div>
+                        <form className='form-stack form-stack--no-card' onSubmit={handleSubmit}>
+                            <label>
+                                Username
+                                <input
+                                    type='text'
+                                    name='username'
+                                    value={form.username}
+                                    onChange={handleChange}
+                                    placeholder='Enter your username'
+                                    required
+                                    disabled={isSubmitting}
+                                />
+                            </label>
+
+                            <label>
+                                Password
+                                <input
+                                    type='password'
+                                    name='password'
+                                    value={form.password}
+                                    onChange={handleChange}
+                                    placeholder='Enter a new password'
+                                    required
+                                    disabled={isSubmitting}
+                                />
+                            </label>
+
+                            <div className='form-actions'>
+                                <button type='submit' disabled={status.state === 'loading'}>
+                                    {status.state === 'loading' ? 'Saving...' : 'Save Changes'}
+                                </button>
+                            </div>
+
+                            {status.state !== 'idle' && (
+                                <p
+                                    className={
+                                        'form-status ' +
+                                            (status.state === 'error' ? 'form-status--error' : 'form-status--success')
+                                            }
+                                        role='status'
+                                >
+                                    {status.message}
+                                </p>
+                            )}
+                        </form> 
+                    </div>
+                </PageSection>
+            </div>
+            {/* Simple slide-out drawer for quick navigation while on the landing view. */}
+            {menuOpen ? <button className="landing-basic__backdrop" aria-label="Close menu" onClick={closeMenu} /> : null}
+            <nav
+                id="landing-drawer"
+                className={"landing-basic__drawer" + (menuOpen ? " landing-basic__drawer--open" : "")}
+                aria-hidden={!menuOpen}
+            >
+                <button type="button" className="landing-basic__drawer-close" onClick={closeMenu} aria-label="Close menu">
+                ×
+                </button>
+                <ul className="landing-basic__drawer-list">
+                {PRIMARY_NAV_LINKS.map(link => (
+                    <li key={link.path}>
+                    <Link to={link.path} onClick={closeMenu}>
+                        {link.label}
+                    </Link>
+                    </li>
+                ))}
+                </ul>
+            </nav>
         </div>
     ); 
 }

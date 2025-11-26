@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import PageSection from '../components/PageSection.jsx';
+import { Link, useNavigate } from 'react-router-dom';
+
 import { apiFetch } from '../api/api.js';
+import { PRIMARY_NAV_LINKS } from '../utils/navigation';
+import PageSection from '../components/PageSection.jsx';
 
 export default function Dashboard() {
   const navigate = useNavigate();
+
   const [questionSets, setQuestionSets] = useState([]);
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,6 +18,10 @@ export default function Dashboard() {
     holiday: 0,
     totalQuestions: 0
   });
+    
+  const [menuOpen, setMenuOpen] = useState(false);
+  const toggleMenu = () => setMenuOpen((v) => !v);
+  const closeMenu = () => setMenuOpen(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,6 +94,21 @@ export default function Dashboard() {
   
   return (
     <div className="game_theme">
+      <header className="landing-basic__chrome">
+        <button
+          type="button"
+          className="landing-basic__menu"
+          aria-label="Open navigation"
+          aria-controls="landing-drawer"
+          aria-expanded={menuOpen}
+          onClick={toggleMenu}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </header>
+
     <div className="page page--stacked">
       <header className="page__header">
         <p className="eyebrow">Control Center</p>
@@ -231,7 +253,28 @@ export default function Dashboard() {
           <button type="button" onClick={() => navigate('/analytics')}>View Analytics</button>
         </div>
       </PageSection>
+
     </div>
+      {/* Simple slide-out drawer for quick navigation while on the landing view. */}
+      {menuOpen ? <button className="landing-basic__backdrop" aria-label="Close menu" onClick={closeMenu} /> : null}
+      <nav
+        id="landing-drawer"
+        className={"landing-basic__drawer" + (menuOpen ? " landing-basic__drawer--open" : "")}
+        aria-hidden={!menuOpen}
+      >
+        <button type="button" className="landing-basic__drawer-close" onClick={closeMenu} aria-label="Close menu">
+          ×
+        </button>
+        <ul className="landing-basic__drawer-list">
+          {PRIMARY_NAV_LINKS.map(link => (
+            <li key={link.path}>
+              <Link to={link.path} onClick={closeMenu}>
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 }
