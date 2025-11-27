@@ -143,6 +143,12 @@
     margin-top: 15px;
 }
 
+.game_theme .search-bar {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: medium;
+}
+
 /* Futuristic inputs */
 .game_theme input,
 .game_theme textarea,

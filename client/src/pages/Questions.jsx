@@ -4,7 +4,7 @@
  * @since 2025-11-25
  * @purpose Manage questions for Family Feud rounds.
  */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useQuestions } from '../context/questions.context.jsx';
 
@@ -12,10 +12,16 @@ import PageSection from '../components/PageSection.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 import { createQuestion, editQuestion, deleteQuestionById } from '../api/questions.api.js';
 import VerifyAction from '../components/VerifyAction.jsx';
+import SearchBar from '../components/SearchBar.jsx';
 
 export default function Questions() {
 
   const { isLoadingQuestions, questions, setQuestions } = useQuestions();
+
+  const [filteredQuestions, setFilteredQuestions] = useState([]);
+  useEffect(() => {
+    if (!isLoadingQuestions) setFilteredQuestions(questions);
+  }, [isLoadingQuestions]);
 
   const [showWarning, setShowWarning] = useState(false);
   const [event, setEvent] = useState(null);
@@ -49,6 +55,7 @@ export default function Questions() {
               updatedAt: new Date().toISOString()
           }
           setQuestions([question, ...questions]);
+          setFilteredQuestions([question, ...filteredQuestions]);
           
       })
       .catch(error => {
@@ -92,8 +99,14 @@ export default function Questions() {
             ...editedQuestion,
             updatedAt: new Date().toISOString()
           }
+
           setQuestions(questions.map((q, index) => {
-            if (index === focusQuestion.current.index) return question;
+            if (q._id === focusQuestion.current.id) return question;
+            return q;
+          }));
+
+          setFilteredQuestions(filteredQuestions.map((q, index) => {
+            if (q._id === focusQuestion.current.id) return question;
             return q;
           }));
       })
@@ -120,6 +133,7 @@ export default function Questions() {
     await deleteQuestionById(focusQuestion.current.id)
     .then(() => {
         setQuestions(questions.filter(q => q._id !== focusQuestion.current.id && q.id !== focusQuestion.current.id));
+        setFilteredQuestions(filteredQuestions.filter(q => q._id !== focusQuestion.current.id && q.id !== focusQuestion.current.id));
     })
     .catch(error => {
         console.error('Error:', error);
@@ -300,41 +314,43 @@ export default function Questions() {
             </div>
 
             <div className="answer-list">
-              {answers.map((answer, index) => (
-                <div key={index} className="answer-list__row">
-                    <input
-                      type="text"
-                      value={answer.answer}
-                      onChange={(e) => handleAnswerChange(index, 'answer', e.target.value)}
-                      placeholder={`Answer ${index + 1}`}
-                      required
-                    />
-                    <input
-                      type="number"
-                      value={answer.points}
-                      onChange={(e) => handleAnswerChange(index, 'points', e.target.value)}
-                      onInput={(e) => {
-                        if (e.target.value > 99) e.target.value = 99;
-                        if (e.target.value < 0) e.target.value = 0;
-                      }}
-                      placeholder="Points"
-                      min="0"
-                      max="99"
-                      required
-                    />
-                    {
-                      answers.length <= 3 ? null 
-                      : <button
-                        type="button"
-                        className="remove-answer-button"
-                        onClick={() => removeAnswer(index)} // This should be the current row's index
-                        aria-label="Remove answer"
-                      >
-                        ×
-                      </button>
-                    }
-                  </div>
-              ))}
+              {
+                answers.map((answer, index) => (
+                  <div key={index} className="answer-list__row">
+                      <input
+                        type="text"
+                        value={answer.answer}
+                        onChange={(e) => handleAnswerChange(index, 'answer', e.target.value)}
+                        placeholder={`Answer ${index + 1}`}
+                        required
+                      />
+                      <input
+                        type="number"
+                        value={answer.points}
+                        onChange={(e) => handleAnswerChange(index, 'points', e.target.value)}
+                        onInput={(e) => {
+                          if (e.target.value > 99) e.target.value = 99;
+                          if (e.target.value < 0) e.target.value = 0;
+                        }}
+                        placeholder="Points"
+                        min="0"
+                        max="99"
+                        required
+                      />
+                      {
+                        answers.length <= 3 ? null 
+                        : <button
+                          type="button"
+                          className="remove-answer-button"
+                          onClick={() => removeAnswer(index)}
+                          aria-label="Remove answer"
+                        >
+                          ×
+                        </button>
+                      }
+                    </div>
+                ))
+              }
             </div>
           </form>
         </PageSection>
@@ -342,10 +358,11 @@ export default function Questions() {
         <PageSection
           title="Existing Questions"
           description="Edit or remove questions."
+          actions={<SearchBar placeholder="Search questions..." data={questions} setData={setFilteredQuestions} />}
         >
           { isLoadingQuestions ? (
             <div className="loading-message">Loading questions...</div>
-          ) : questions.length === 0 ? (
+          ) : filteredQuestions.length === 0 ? (
             <div className="empty-state">
               <p>No questions found.</p>
               <p>Create your first question to organize your game content.</p>
@@ -359,7 +376,7 @@ export default function Questions() {
                 <span>Updated</span>
                 <span>Actions</span>
               </div>
-              {questions?.slice(0, 20).map((question, index) => (
+              {filteredQuestions?.slice(0, 20).map((question, index) => (
                 <div key={question._id || question.id} className="table-placeholder__row">
                   <span>{question.text}</span>
                   <span>{question.difficulty || 'None'}</span>
