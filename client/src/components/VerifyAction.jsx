@@ -18,7 +18,7 @@ export default function VerifyAction({ action, text, image, onConfirm, onCancel 
                     <p>This action cannot be undone.</p>
                     <div className="notification-action-buttons">
                         <button className="primary-button" onClick={(e) => onConfirm(e)}>Confirm</button>
-                        <button className="cancel-button" onClick={() => onCancel()}>Cancel</button>
+                        <button className="cancel-button" onClick={(e) => onCancel(e)}>Cancel</button>
                     </div>
                 </PageSection>
             </div>
