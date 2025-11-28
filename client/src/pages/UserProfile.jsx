@@ -13,6 +13,24 @@ import PageSection from '../components/PageSection.jsx';
 import profileIcon from '../assets/Icon.png';
 import logo from '/Family_Feud_Logo.png';
 
+const COUNTRY_LIST = [
+    "Australia",
+    "Brazil",
+    "Canada",
+    "Dominican Republic",
+    "France",
+    "Ghana",
+    "Italy",
+    "Jamaica",
+    "Japan",
+    "Mexico",
+    "Russia",
+    "Spain",
+    "United Kingdom",
+    "United States",
+    "United Arab Emirates"
+];
+
 export default function UserProfile() {
     const { user, setUser } = useAuth();
 
@@ -20,6 +38,7 @@ export default function UserProfile() {
         username: user?.username || '',
         password: '',
         image: user?.image || null,
+        country: user.country || "",
     });
 
     const [status, setStatus] = useState({
@@ -34,28 +53,42 @@ export default function UserProfile() {
         else setForm((prev) => ({ ...prev, [name]: value }) );
     }
 
-    async function handleSubmit(e) {
-        e.preventDefault();
+async function handleSubmit(e) {
+e.preventDefault();
 
-        setStatus({ state: 'loading', message: '' });
+setStatus({ state: 'loading', message: '' });
 
-        const formData = new FormData();
-        formData.append('username', form.username);
-        formData.append('image', form.image);
+const formData = new FormData();
+formData.append('username', form.username);
 
-        const response = await apiFetch(`/user/${user._id}`, {
-            method: 'PUT',
-            body: formData
-        });
+if (form.password) {
+    formData.append('password', form.password);
+}
 
-        if (response.ok) {
-            const updatedUser = await response.json();
-            setUser(updatedUser);
-            setStatus({ state: 'success', message: 'Profile updated successfully.' });
-        } else {
-            setStatus({ state: 'error', message: 'Failed to update profile. Please try again.' });
-        }
-    }
+if (form.image) {
+    formData.append('image', form.image);
+}
+
+if (form.country) {
+    formData.append('country', form.country);
+}
+
+const response = await apiFetch(`/user/${user._id}`, {
+    method: 'PUT',
+    body: formData,
+});
+
+if (response.ok) {
+    const updatedUser = await response.json();
+    setUser(updatedUser);
+    setStatus({ state: 'success', message: 'Profile updated.' });
+} else {
+    setStatus({
+        state: 'error',
+        message: 'Profile update unsuccessful. Please try again.',
+     });
+   }
+}
 
     const handleImageSearch = (e) => {
         const file = e.target.files && e.target.files[0];
@@ -69,6 +102,41 @@ export default function UserProfile() {
 
         handleChange(e);
     };
+
+async function handleDeleteAccount() {
+if (!window.confirm("Deleting your account is permanent. Are you sure you would like to proceed? ")) {
+    return;
+  }
+
+  setStatus({ state: 'loading', message: '' });
+  try {
+    const response = await apiFetch(`/user/${user._id}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      setStatus({
+         state: 'success', 
+         message: 'Your account has been deleted.' });
+
+         setUser(null);
+
+         setTimeout(() => {
+            window.location.href = '/login';
+         }, 1000);
+    } else {
+      setStatus({
+        state: 'error',
+        message: 'We ran into an issue trying to delete your account. Please try again.',
+      });
+    }
+  } catch (err) {
+    setStatus({
+      state: 'error',
+      message: 'Something went wrong while deleting your account. Please try again.',
+    });
+  }
+}
 
     const isSubmitting = status.state === 'loading';
 
@@ -120,6 +188,24 @@ export default function UserProfile() {
                                 />
                             </label>
 
+                                <label>
+                                    Country
+                                    <select
+                                    name="country"
+                                    value={form.country}
+                                    onChange={handleChange}
+                                    required
+                                    >
+                                     <option value="">Select your country</option>
+
+                                        {COUNTRY_LIST.map((c) => (
+                                        <option key={c} value={c}>
+                                        {c}
+                                    </option>
+                                  ))}
+                            </select>
+                        </label>
+                            
                             <label>
                                 Password
                                 <input
@@ -136,6 +222,16 @@ export default function UserProfile() {
                             <div className='form-actions'>
                                 <button type='submit' disabled={status.state === 'loading'}>
                                     {status.state === 'loading' ? 'Saving...' : 'Save Changes'}
+                                </button>
+                            </div>
+
+                            <div className='form-actions'>
+                                    <button type='button'
+                                    className='delete-btn'
+                                    onClick={handleDeleteAccount}
+                                    disabled={isSubmitting}
+                                >
+                                    Delete My Account
                                 </button>
                             </div>
 
