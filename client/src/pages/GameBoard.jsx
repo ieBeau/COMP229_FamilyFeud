@@ -21,7 +21,6 @@ import {
   QUESTION_CARD_ASSET,
   TIMER_CARD_ASSET,
 } from '../gameplay/gameBoardConstants.js';
-import Sidebar from '../components/Sidebar.jsx';
 
 const SERVER_URL = import.meta.env.PROD ? (import.meta.env.VITE_SERVER_URL || '') : (import.meta.env.VITE_LOCAL_URL || '');
 
@@ -136,8 +135,6 @@ export default function GameBoard() {
         </div>
 
         <div className="game-board__stage">
-
-          <Sidebar />
 
           <img
             src="/Gameboard_Backround.jpg"

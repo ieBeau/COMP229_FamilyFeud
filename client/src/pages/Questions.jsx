@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react';
 import { useQuestions } from '../context/questions.context.jsx';
 import { createQuestion, editQuestion, deleteQuestionById } from '../api/questions.api.js';
 
-import Sidebar from '../components/Sidebar.jsx';
 import SearchBar from '../components/SearchBar.jsx';
 import PageSection from '../components/PageSection.jsx';
 import VerifyAction from '../components/VerifyAction.jsx';
@@ -225,8 +224,6 @@ export default function Questions() {
 
   return (
     <div className="game_theme">
-
-      <Sidebar />
 
       {
         !showWarning ? null

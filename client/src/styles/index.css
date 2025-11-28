@@ -586,6 +586,7 @@ button:focus-visible {
 }
 
 .landing-basic__menu {
+  position: fixed;
   pointer-events: auto;
   width: 44px;
   height: 44px;

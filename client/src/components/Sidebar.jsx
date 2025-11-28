@@ -6,7 +6,7 @@
  * @purpose Sidebar component for navigation and additional options.
 */
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import { PRIMARY_ADMIN_NAV_LINKS, PRIMARY_AUTH_NAV_LINKS, PRIMARY_USER_NAV_LINKS } from "../utils/navigation";
 import { useAuth } from "./auth/AuthContext";
@@ -19,7 +19,7 @@ export default function Sidebar() {
     
     const navigate = useNavigate();
     
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(true);
     const toggleMenu = () => setMenuOpen((v) => !v);
     const closeMenu = () => setMenuOpen(false);
 
@@ -31,18 +31,18 @@ export default function Sidebar() {
     return (
         <>
             <header className="landing-basic__chrome">
-                <button
-                type="button"
-                className="landing-basic__menu"
-                aria-label="Open navigation"
-                aria-controls="landing-drawer"
-                aria-expanded={menuOpen}
-                onClick={toggleMenu}
+                <div
+                    type="button"
+                    className="landing-basic__menu"
+                    aria-label="Open navigation"
+                    aria-controls="landing-drawer"
+                    aria-expanded={menuOpen}
+                    onClick={toggleMenu}
                 >
-                <span />
-                <span />
-                <span />
-                </button>
+                    <span />
+                    <span />
+                    <span />
+                </div>
             </header>
 
             {/* Simple slide-out drawer for quick navigation while on the landing view. */}
@@ -117,6 +117,10 @@ export default function Sidebar() {
                     }
                 </ul>
             </nav>
+
+            <main>
+                <Outlet />
+            </main>
         </>
     );
 }

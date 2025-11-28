@@ -9,7 +9,6 @@ import { useState } from 'react';
 import { apiFetch } from '../api/api.js';
 import { useAuth } from '../components/auth/AuthContext.js';
 
-import Sidebar from '../components/Sidebar.jsx';
 import PageSection from '../components/PageSection.jsx';
 import profileIcon from '../assets/Icon.png';
 import logo from '/Family_Feud_Logo.png';
@@ -75,8 +74,6 @@ export default function UserProfile() {
 
     return (
         <div className="game_theme">
-            
-            <Sidebar /> 
 
             <div className='page page--auth'>
                 <header className='page__header'>

@@ -11,7 +11,6 @@ import { deleteUserById, updateUserById } from '../api/users.api.js';
 
 import profileIcon from '../assets/Icon.png';
 
-import Sidebar from '../components/Sidebar.jsx';
 import SearchBar from '../components/SearchBar.jsx';
 import PageSection from '../components/PageSection.jsx';
 import VerifyAction from '../components/VerifyAction.jsx';
@@ -118,8 +117,6 @@ export default function Accounts() {
 
   return (
     <div className="game_theme">
-
-      <Sidebar />
 
       {
         !showWarning ? null

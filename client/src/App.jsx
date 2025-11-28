@@ -31,6 +31,7 @@ import UnderConstruction from './pages/UnderConstruction.jsx';
 
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import ProtectedAdminRoute from './routes/ProtectedAdminRoute.jsx';
+import Sidebar from './components/Sidebar.jsx';
 
 export default function App() {
   
@@ -39,35 +40,38 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<Layout />}> */}
+        <Route index element={<Home />} />
+        
+        <Route element={<Sidebar />}>
+          {/* <Route path="/" element={<Layout />}> */}
 
-          {/* Public Group */}
-          <Route index element={<Home />} />
-          <Route path="signin" element={<SignIn />} />
-          <Route path="signup" element={<SignUp />} />
-          <Route path="signed-out" element={<SignedOut />} />
+            {/* Public Group */}
+            <Route path="signin" element={<SignIn />} />
+            <Route path="signup" element={<SignUp />} />
+            <Route path="signed-out" element={<SignedOut />} />
 
-          {/* Protected Group - User */}
-          <Route element={<ProtectedRoute />} >
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="leaderboard" element={<Leaderboard />} />
-            <Route path="question-sets" element={<QuestionSets />} />
-            <Route path="sessions" element={<Sessions />} />
-            <Route path="player" element={<PlayerJoin />} />
-            <Route path="/game-board" element={<GameBoard />} />
-            <Route path="profile" element={<UserProfile />} />
-            <Route path="under-construction" element={<UnderConstruction />} />
-          </Route>
+            {/* Protected Group - User */}
+            <Route element={<ProtectedRoute />} >
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="leaderboard" element={<Leaderboard />} />
+              <Route path="question-sets" element={<QuestionSets />} />
+              <Route path="sessions" element={<Sessions />} />
+              <Route path="player" element={<PlayerJoin />} />
+              <Route path="/game-board" element={<GameBoard />} />
+              <Route path="profile" element={<UserProfile />} />
+              <Route path="under-construction" element={<UnderConstruction />} />
+            </Route>
 
-          {/* Protected Group - Admin */}
-          <Route element={<ProtectedAdminRoute />} >
-            <Route path="accounts" element={<Accounts />} />
-            <Route path="questions" element={<Questions />} />
-          </Route>
+            {/* Protected Group - Admin */}
+            <Route element={<ProtectedAdminRoute />} >
+              <Route path="accounts" element={<Accounts />} />
+              <Route path="questions" element={<Questions />} />
+            </Route>
 
-          {/* any other path -> if authenticated go to Home, otherwise redirect to /login */}
-          <Route path="*" element={user ? <NotFound /> : <Home />} />
-        {/* </Route> */}
+            {/* any other path -> if authenticated go to Home, otherwise redirect to /login */}
+            <Route path="*" element={user ? <NotFound /> : <Home />} />
+          {/* </Route> */}
+        </Route>
       </Routes>
     </BrowserRouter>
   );

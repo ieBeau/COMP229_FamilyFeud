@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { apiFetch } from '../api/api.js';
 
-import Sidebar from '../components/Sidebar.jsx';
 import PageSection from '../components/PageSection.jsx';
 import logo from '/Family_Feud_Logo.png';
 
@@ -120,8 +119,6 @@ export default function QuestionSets() {
 
   return (
     <div className="game_theme">
-      
-      <Sidebar />
 
       <div className="page page--wide question-sets-page">
         <header className="page__header">

@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/auth/AuthContext.js';
 
 import PageSection from '../components/PageSection.jsx';
-import Sidebar from '../components/Sidebar.jsx';
 import logo from '/Family_Feud_Logo.png';
 
 export default function SignIn() {
@@ -46,8 +45,6 @@ export default function SignIn() {
 
   return (
     <div className="game_theme">
-
-      <Sidebar />
       <div className="page page--auth">
         <header className="page__header">
           <p className="eyebrow">Account</p>
