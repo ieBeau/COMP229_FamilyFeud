@@ -6,7 +6,6 @@
  */
 import { useNavigate } from 'react-router-dom';
 
-import Sidebar from '../components/Sidebar.jsx';
 import PageSection from '../components/PageSection.jsx';
 
 export default function PlayerJoin() {
@@ -14,8 +13,6 @@ export default function PlayerJoin() {
 
   return (
     <div className="game_theme">
-
-      <Sidebar />
 
       <div className="page page--centered">
         <header className="page__header">

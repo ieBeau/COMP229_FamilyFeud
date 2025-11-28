@@ -9,8 +9,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { apiFetch } from '../api/api.js';
 
-import Sidebar from '../components/Sidebar.jsx';
 import PageSection from '../components/PageSection.jsx';
+import logo from '/Family_Feud_Logo.png';
 
 export default function QuestionSets() {
   const navigate = useNavigate();
@@ -117,26 +117,15 @@ export default function QuestionSets() {
     }
   };
 
-  // if (loading) {
-  //   return (
-  //     <div className="game_theme" style={{ minHeight: '100vh' }}>
-  //       <div className="page page--stacked">
-  //         <div className="loading-message">Loading question sets...</div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   return (
     <div className="game_theme">
-      
-      <Sidebar />
 
       <div className="page page--wide question-sets-page">
         <header className="page__header">
           <p className="eyebrow">Survey Bank</p>
           <h2>Question Sets</h2>
           <p>Curate survey prompts and answer lists for upcoming episodes.</p>
+          <img src={logo} alt="Family Feud Logo" className='page__logo' />
         </header>
 
         {error && (

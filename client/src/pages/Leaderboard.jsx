@@ -3,7 +3,6 @@ import "../styles/Leaderboard.css";
 import { useState, useEffect } from "react";
 import { getLeaderboard } from "../utils/leaderboardApi";
 
-import Sidebar from "../components/Sidebar";
 import backgroundImage from "../assets/FF-Leaderboard.png";
 
 export default function Leaderboard(props) {
@@ -61,8 +60,6 @@ export default function Leaderboard(props) {
 
   return (
     <div className="game_theme">
-
-      <Sidebar />
       
       <div
         className="page page--centered leaderboard-page"

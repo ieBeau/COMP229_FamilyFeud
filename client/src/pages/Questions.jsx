@@ -7,18 +7,19 @@
 import { useEffect, useState } from 'react';
 
 import { useQuestions } from '../context/questions.context.jsx';
-
-import PageSection from '../components/PageSection.jsx';
-import Sidebar from '../components/Sidebar.jsx';
 import { createQuestion, editQuestion, deleteQuestionById } from '../api/questions.api.js';
-import VerifyAction from '../components/VerifyAction.jsx';
+
 import SearchBar from '../components/SearchBar.jsx';
+import PageSection from '../components/PageSection.jsx';
+import VerifyAction from '../components/VerifyAction.jsx';
+import logo from '/Family_Feud_Logo.png';
 
 export default function Questions() {
 
   const { isLoadingQuestions, questions, setQuestions } = useQuestions();
 
   const [filteredQuestions, setFilteredQuestions] = useState([]);
+
   useEffect(() => {
     if (!isLoadingQuestions) setFilteredQuestions(questions);
   }, [isLoadingQuestions]);
@@ -221,20 +222,14 @@ export default function Questions() {
     setAnswers(newAnswers);
   };
 
-  // TODO:
-  // Make prompt varifying delete action
-  // edit question will fill form above, and save will turn to update instead of create
-  // pagenate questions if more than 20
-
   return (
     <div className="game_theme">
-
-      <Sidebar />
 
       {
         !showWarning ? null
         : <VerifyAction 
             action={action.current}
+            text="this question"
             onConfirm={async () => action.current === 'edit' ? handleEditSubmit() : handleDeleteSubmit()} 
             onCancel={() => handleVerifyCancel()}
           />
@@ -245,6 +240,7 @@ export default function Questions() {
           <p className="eyebrow">Question Bank</p>
           <h2>Questions</h2>
           <p>Curate questions for upcoming episodes.</p>
+          <img src={logo} alt="Family Feud Logo" className='page__logo' />
         </header>
 
         <PageSection
@@ -358,7 +354,7 @@ export default function Questions() {
         <PageSection
           title={`Existing Questions - ${filteredQuestions.length}`}
           description="Edit or remove questions."
-          actions={<SearchBar placeholder="Search questions..." data={questions} setData={setFilteredQuestions} />}
+          actions={<SearchBar placeholder="Search questions..." type="questions" data={questions} setData={setFilteredQuestions} />}
         >
           { isLoadingQuestions ? (
             <div className="loading-message">Loading questions...</div>
@@ -376,7 +372,7 @@ export default function Questions() {
                 <span>Updated</span>
                 <span>Actions</span>
               </div>
-              {filteredQuestions?.slice(0, 10).map((question, index) => (
+              {filteredQuestions?.slice(0, 6).map((question, index) => (
                 <div key={question._id || question.id} className="table-placeholder__row">
                   <span>{question.text}</span>
                   <span>{question.difficulty || 'None'}</span>

@@ -17,7 +17,7 @@ router.get('/:id', authMiddleware.requireSignin, userController.getUserById);
 
 // Authorization middleware to ensure user can only access their own data
 router.get('/', authMiddleware.requireSignin, authMiddleware.hasAuthorization, userController.getAllUsers);
-router.put('/:id', upload.single('image'), authMiddleware.requireSignin, authMiddleware.hasAuthorization, userController.updateUser);
-router.delete('/:id', authMiddleware.requireSignin, authMiddleware.hasAuthorization, userController.deleteUser);
+router.put('/:id', upload.single('image'), authMiddleware.requireSignin, authMiddleware.hasAuthorization, userController.updateUserById);
+router.delete('/:id', authMiddleware.requireSignin, authMiddleware.hasAuthorization, userController.deleteUserById);
 
 export default router;

@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { apiFetch } from '../api/api.js';
 
-import Sidebar from '../components/Sidebar.jsx';
 import PageSection from '../components/PageSection.jsx';
+import logo from '/Family_Feud_Logo.png';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -80,25 +80,16 @@ export default function Dashboard() {
 
     fetchData();
   }, []);
-
-  // if (loading) {
-  //   return (
-  //     <div className="game_theme" style={{ minHeight: '100vh' }}>
-  //       <div className="page page--stacked">Loading dashboard...</div>
-  //     </div>
-  //   );
-  // }
   
   return (
     <div className="game_theme">
-
-      <Sidebar />
       
-      <div className="page page--stacked">
+      <div className="page page--wide">
         <header className="page__header">
           <p className="eyebrow">Control Center</p>
           <h2>Welcome back, Host</h2>
           <p>Review high-level activity before launching your next Family Feud session.</p>
+          <img src={logo} alt="Family Feud Logo" className='page__logo' />
         </header>
 
         {fetchError && (

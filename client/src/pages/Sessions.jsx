@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { apiFetch } from '../api/api.js';
 
-import Sidebar from '../components/Sidebar.jsx';
 import PageSection from '../components/PageSection.jsx';
+import logo from '/Family_Feud_Logo.png';
 
 export default function Sessions() {
   const navigate = useNavigate();
@@ -91,24 +91,15 @@ export default function Sessions() {
     return foundSet ? foundSet.title : 'Unknown Set';
   };
 
-  // if (loading) {
-  //   return (
-  //     <div className="game_theme" style={{ minHeight: '100vh' }}>
-  //       <div className="page page--stacked">Loading sessions...</div>
-  //     </div>
-  //   );
-  // }
-
   return (
     <div className="game_theme">
-      
-      <Sidebar />
 
       <div className="page page--stacked">
         <header className="page__header">
           <p className="eyebrow">Live Control</p>
           <h2>Sessions</h2>
           <p>Oversee lobbies, launch rounds, and keep scores synchronized.</p>
+          <img src={logo} alt="Family Feud Logo" className='page__logo' />
         </header>
 
         <PageSection

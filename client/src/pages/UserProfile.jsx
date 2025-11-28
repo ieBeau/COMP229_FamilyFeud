@@ -9,9 +9,9 @@ import { useState } from 'react';
 import { apiFetch } from '../api/api.js';
 import { useAuth } from '../components/auth/AuthContext.js';
 
-import Sidebar from '../components/Sidebar.jsx';
 import PageSection from '../components/PageSection.jsx';
 import profileIcon from '../assets/Icon.png';
+import logo from '/Family_Feud_Logo.png';
 
 const COUNTRY_LIST = [
     "Australia",
@@ -142,13 +142,13 @@ if (!window.confirm("Deleting your account is permanent. Are you sure you would 
 
     return (
         <div className="game_theme">
-            <Sidebar /> 
 
             <div className='page page--auth'>
                 <header className='page__header'>
                     <p className='eyebrow'>Host Account</p>
                     <h2>My Profile</h2>
                     <p>View and update your account details.</p>
+                    <img src={logo} alt="Family Feud Logo" className='page__logo' />
                 </header>
 
                 <PageSection
