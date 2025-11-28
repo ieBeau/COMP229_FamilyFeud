@@ -39,7 +39,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        {/* <Route path="/" element={<Layout />}> */}
 
           {/* Public Group */}
           <Route index element={<Home />} />
@@ -67,7 +67,7 @@ export default function App() {
 
           {/* any other path -> if authenticated go to Home, otherwise redirect to /login */}
           <Route path="*" element={user ? <NotFound /> : <Home />} />
-        </Route>
+        {/* </Route> */}
       </Routes>
     </BrowserRouter>
   );

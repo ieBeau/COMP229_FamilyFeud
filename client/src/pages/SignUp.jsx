@@ -11,6 +11,7 @@ import { useAuth } from '../components/auth/AuthContext.js';
 
 import PageSection from '../components/PageSection.jsx';
 import Sidebar from '../components/Sidebar.jsx';
+import logo from '../../public/Family_Feud_Logo.png';
 
 export default function SignUp() {
   const { signUp } = useAuth();
@@ -62,6 +63,7 @@ export default function SignUp() {
           <p className="eyebrow">Account</p>
           <h2>Create Host Account</h2>
           <p>Request access to question management and live session tools.</p>
+          <img src={logo} alt="Family Feud Logo" className='page__logo' />
         </header>
 
         <PageSection title="Host Details" description="Accounts require approval before they go live.">

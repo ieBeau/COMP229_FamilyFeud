@@ -6,9 +6,12 @@
  */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PageSection from '../components/PageSection.jsx';
+
 import { useAuth } from '../components/auth/AuthContext.js';
+
+import PageSection from '../components/PageSection.jsx';
 import Sidebar from '../components/Sidebar.jsx';
+import logo from '../../public/Family_Feud_Logo.png';
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -49,6 +52,7 @@ export default function SignIn() {
         <header className="page__header">
           <p className="eyebrow">Account</p>
           <h2>Sign In</h2>
+          <img src={logo} alt="Family Feud Logo" className='page__logo' />
           {/* <p>Enter your credentials to unlock host controls.</p> */}
         </header>
 

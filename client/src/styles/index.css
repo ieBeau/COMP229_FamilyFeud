@@ -201,6 +201,12 @@ button:focus-visible {
   gap: 2rem;
 }
 
+.page--wide {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 .page--centered {
   display: flex;
   flex-direction: column;
@@ -218,6 +224,20 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.page__logo {
+  width: 180px;
+  position: absolute;
+  right: 30px;
+  top: 30px;
+}
+
+.page--stacked .page__logo {
+  width: 120px;
+  position: absolute;
+  right: 30px;
+  top: 30px;
 }
 
 .eyebrow {
@@ -537,7 +557,7 @@ button:focus-visible {
   /*background: radial-gradient(circle at 50% -10%, #2563eb 0%, #0f172a 60%, #020617 100%);*/
   color: #fff;
 }
-.landing-basic__chrome {
+/* .landing-basic__chrome {
   position: absolute;
   top: 2rem;
   left: 2rem;
@@ -545,6 +565,22 @@ button:focus-visible {
   display: flex;
   justify-content: space-between;
   pointer-events: none;
+} */
+
+.landing-basic__chrome {
+  position: sticky;
+  top: 2rem;
+  left: 2rem;
+  right: 2rem;
+  margin-left: 25px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  transform: translateZ(0);
+  will-change: transform, opacity;
 }
 
 .landing-basic__menu {
@@ -685,7 +721,40 @@ button:focus-visible {
 
 .landing-basic__drawer--open {
   transform: translateX(0);
+  overflow-y: auto;
+  max-height: 100vh;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-bottom: env(safe-area-inset-bottom, 1rem);
 }
+
+  /* custom drawer scrollbar */
+  .landing-basic__drawer--open {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #5181e9 rgba(255,255,255,0.03);
+  }
+
+  /* WebKit (Chrome, Safari, Edge) */
+  .landing-basic__drawer--open::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  .landing-basic__drawer--open::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.03);
+    border-radius: 999px;
+  }
+
+  .landing-basic__drawer--open::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #60a5fa 0%, #4573f3 100%);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .landing-basic__drawer--open::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #93c5fd 0%, #2563eb 100%);
+  }
 
 .landing-basic__drawer-close {
   background: none;
@@ -702,6 +771,7 @@ button:focus-visible {
   margin: 0;
   display: grid;
   gap: 0.5rem;
+  padding-bottom: 40px;
 }
 
 .landing-basic__drawer-list a {
@@ -718,6 +788,20 @@ button:focus-visible {
 .landing-basic__drawer-list .landing-basic__drawer-item--active a {
   color: white;
   background: rgba(110, 160, 229, 0.15);
+}
+
+.landing-basic__drawer-list .landing-basic__drawer-profile-avatar {
+  width: 120px !important;  
+  height: 120px !important;
+  border-radius: 50% !important;
+  border: 3px solid rgba(59, 130, 246, 0.5) !important;
+  object-fit: cover !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+  transform: translateX(50%) !important;
+}
+
+.landing-basic__drawer-list .landing-basic__drawer-profile-username {
+  text-align: center;
 }
 
 @media (max-width: 768px) {

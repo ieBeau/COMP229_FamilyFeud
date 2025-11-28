@@ -11,6 +11,7 @@ import { apiFetch } from '../api/api.js';
 
 import Sidebar from '../components/Sidebar.jsx';
 import PageSection from '../components/PageSection.jsx';
+import logo from '../../public/Family_Feud_Logo.png';
 
 export default function QuestionSets() {
   const navigate = useNavigate();
@@ -117,16 +118,6 @@ export default function QuestionSets() {
     }
   };
 
-  // if (loading) {
-  //   return (
-  //     <div className="game_theme" style={{ minHeight: '100vh' }}>
-  //       <div className="page page--stacked">
-  //         <div className="loading-message">Loading question sets...</div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   return (
     <div className="game_theme">
       
@@ -137,6 +128,7 @@ export default function QuestionSets() {
           <p className="eyebrow">Survey Bank</p>
           <h2>Question Sets</h2>
           <p>Curate survey prompts and answer lists for upcoming episodes.</p>
+          <img src={logo} alt="Family Feud Logo" className='page__logo' />
         </header>
 
         {error && (

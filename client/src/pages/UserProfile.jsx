@@ -12,6 +12,7 @@ import { useAuth } from '../components/auth/AuthContext.js';
 import Sidebar from '../components/Sidebar.jsx';
 import PageSection from '../components/PageSection.jsx';
 import profileIcon from '../assets/Icon.png';
+import logo from '../../public/Family_Feud_Logo.png';
 
 export default function UserProfile() {
     const { user, setUser } = useAuth();
@@ -82,6 +83,7 @@ export default function UserProfile() {
                     <p className='eyebrow'>Host Account</p>
                     <h2>My Profile</h2>
                     <p>View and update your account details.</p>
+                    <img src={logo} alt="Family Feud Logo" className='page__logo' />
                 </header>
 
                 <PageSection

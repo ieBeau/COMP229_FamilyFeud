@@ -39,7 +39,7 @@ const createUser = async (req, res) => {
     }
 };
 
-const updateUser = async (req, res) => {
+const updateUserById = async (req, res) => {
     try {
         if (req.file) req.body.image = { data: await bufferImage(req.file), contentType: req.file.mimetype };
         
@@ -54,7 +54,7 @@ const updateUser = async (req, res) => {
     }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUserById = async (req, res) => {
     try {
         const deletedUser = await UserModel.findByIdAndDelete(req.params.id);
         if (!deletedUser) return res.status(404).json({ message: 'User not found' });
@@ -64,4 +64,4 @@ const deleteUser = async (req, res) => {
     }
 };
 
-export default { getUserById, getAllUsers, createUser, updateUser, deleteUser };
+export default { getUserById, getAllUsers, createUser, updateUserById, deleteUserById };
