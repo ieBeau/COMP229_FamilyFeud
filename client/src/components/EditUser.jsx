@@ -7,7 +7,7 @@
 
 import PageSection from "./PageSection";
 import profileIcon from '../assets/Icon.png';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function EditUser({ user, setUser, onConfirm, onCancel }) {
 
@@ -163,7 +163,7 @@ export default function EditUser({ user, setUser, onConfirm, onCancel }) {
                             </div>
                         </div>
                             
-                        <div className="edit-user-action-buttons--wide" style={{ gridColumn: 'span 4' }}>
+                        <div className="edit-user-action-buttons--wide">
                             <button type="submit" className="primary-button">Confirm</button>
                             <button type="cancel" className="cancel-button" onClick={(e) => onCancel(e)}>Cancel</button>
                             
