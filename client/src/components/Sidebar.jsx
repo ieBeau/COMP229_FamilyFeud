@@ -11,6 +11,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { PRIMARY_ADMIN_NAV_LINKS, PRIMARY_AUTH_NAV_LINKS, PRIMARY_USER_NAV_LINKS } from "../utils/navigation";
 import { useAuth } from "./auth/AuthContext";
 
+import profileIcon from '../assets/Icon.png';
+
 export default function Sidebar() {
 
     const { user, signOut } = useAuth();
@@ -61,19 +63,25 @@ export default function Sidebar() {
                                     className={(window.location.pathname === link.path || window.location.pathname.startsWith(link.path + '/')) ? "landing-basic__drawer-item landing-basic__drawer-item--active" : "landing-basic__drawer-item"}
                                     aria-current={(window.location.pathname === link.path || window.location.pathname.startsWith(link.path + '/')) ? "page" : undefined}
                                 >
-                                    <Link to={link.path} onClick={closeMenu}>
+                                    <Link to={link.path}>
                                         {link.label}
                                     </Link>
                                 </li>
                             ))
                         : <>
+                            <li>
+                                <img src={typeof user.image === 'string' ? user.image : profileIcon} alt={`${user.username}'s profile`} className="landing-basic__drawer-profile-avatar" />
+                            </li>
+                            <li>
+                                <h2 className="landing-basic__drawer-profile-username">{user.username}</h2>
+                            </li>
                             {
                                 PRIMARY_USER_NAV_LINKS.map(link => (
                                     <li key={link.path}
                                         className={(window.location.pathname === link.path || window.location.pathname.startsWith(link.path + '/')) ? "landing-basic__drawer-item landing-basic__drawer-item--active" : "landing-basic__drawer-item"}
                                         aria-current={(window.location.pathname === link.path || window.location.pathname.startsWith(link.path + '/')) ? "page" : undefined}
                                     >
-                                        <Link to={link.path} onClick={closeMenu}>
+                                        <Link to={link.path}>
                                             {link.label}
                                         </Link>
                                     </li>
@@ -92,7 +100,7 @@ export default function Sidebar() {
                                                 className={(window.location.pathname === link.path || window.location.pathname.startsWith(link.path + '/')) ? "landing-basic__drawer-item landing-basic__drawer-item--active" : "landing-basic__drawer-item"}
                                                 aria-current={(window.location.pathname === link.path || window.location.pathname.startsWith(link.path + '/')) ? "page" : undefined}
                                             >
-                                                <Link to={link.path} onClick={closeMenu}>
+                                                <Link to={link.path}>
                                                     {link.label}
                                                 </Link>
                                             </li>
@@ -101,11 +109,7 @@ export default function Sidebar() {
                                 </> 
                             }
                             <li>
-                                <button
-                                    type="button"
-                                    className="landing-basic__drawer-link landing-basic__drawer-link--button"
-                                    onClick={handleSignOut}
-                                >
+                                <button type="button" className="primary-button" onClick={handleSignOut}>
                                     Sign Out
                                 </button>
                             </li>

@@ -122,8 +122,6 @@ export default function GameBoard() {
 
   return (
     <div className="landing-basic game-board">
-      
-      <Sidebar />
 
       <main className="landing-basic__body game-board__body">
 
@@ -138,6 +136,9 @@ export default function GameBoard() {
         </div>
 
         <div className="game-board__stage">
+
+          <Sidebar />
+
           <img
             src="/Gameboard_Backround.jpg"
             alt="Family Feud stage backdrop"
