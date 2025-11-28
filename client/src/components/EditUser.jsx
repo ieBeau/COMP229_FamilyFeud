@@ -165,7 +165,7 @@ export default function EditUser({ user, setUser, onConfirm, onCancel }) {
                             
                         <div className="edit-user-action-buttons--wide">
                             <button type="submit" className="primary-button">Confirm</button>
-                            <button type="cancel" className="cancel-button" onClick={(e) => onCancel(e)}>Cancel</button>
+                            <button type="reset" className="cancel-button" onClick={(e) => onCancel(e)}>Cancel</button>
                             
                             <div style={{ color: status.state === 'error' ? 'red' : 'green'  }}>
                                 {status.state !== 'idle' && (

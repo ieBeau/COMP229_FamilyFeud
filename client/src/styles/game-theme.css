@@ -197,7 +197,6 @@
 
 .game_theme .edit-user-action-buttons--wide {
     display: flex;
-    justify-content: center;
     gap: 25px;
     margin-top: 15px;
     justify-content: flex-start;

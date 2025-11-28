@@ -85,10 +85,6 @@ export default function Accounts() {
       else setShowSuccess(true);
     });
 
-      setShowWarning(false);
-      setShowEditUser(false);
-      setShowSuccess(true);
-
   }
 
   const handleDeleteSubmit = async (e) => {
