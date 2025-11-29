@@ -1,4 +1,3 @@
-import { getRandomQuestion } from "./questions.api";
 
 const SERVER_URL = import.meta.env.PROD ? (import.meta.env.VITE_SERVER_URL || '') : (import.meta.env.VITE_LOCAL_URL || '');
 const API_BASE = '/api/v1';
