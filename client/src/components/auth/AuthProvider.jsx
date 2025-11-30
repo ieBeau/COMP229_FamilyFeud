@@ -8,7 +8,8 @@ export default function AuthProvider({ children }) {
   const
     [isLoggedIn, setIsLoggedIn] = useState(false),
     [isLoading, setIsLoading] = useState(true),
-    [user, setUser] = useState(null);
+    [user, setUser] = useState(null)
+
 
   useEffect(() => {
     const checkSession = async () => {
