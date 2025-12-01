@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { apiFetch } from '../api/api.js';
+import { createQuestionSet, deleteQuestionSetById, getQuestionSets } from '../api/question-sets.api.js';
 
 import PageSection from '../components/PageSection.jsx';
 import logo from '/Family_Feud_Logo.png';
@@ -24,10 +24,7 @@ export default function QuestionSets() {
   useEffect(() => {
     const fetchQuestionSets = async () => {
       try {
-        const response = await apiFetch('/question-sets', {
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-        });
+        const response = await getQuestionSets();
 
         if (!response.ok) {
           throw new Error('Failed to fetch question sets');
@@ -84,12 +81,7 @@ export default function QuestionSets() {
 
     try {
       
-      const response = await apiFetch('/question-sets', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
+      const response = await createQuestionSet(formData);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -97,10 +89,7 @@ export default function QuestionSets() {
       }
 
       // Refresh the list after creation
-      const updatedResponse = await apiFetch('/question-sets', {
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const updatedResponse = await getQuestionSets();
 
       if (updatedResponse.ok) {
         const updatedData = await updatedResponse.json();
@@ -283,11 +272,7 @@ export default function QuestionSets() {
                         onClick={async () => {
                           if (window.confirm('Are you sure you want to delete this question set?')) {
                             try {
-                              const response = await fetch(`/api/v1/question-sets/${set._id || set.id}`, {
-                                method: 'DELETE',
-                                credentials: 'include',
-                                headers: { 'Content-Type': 'application/json' },
-                              });
+                              const response = await deleteQuestionSetById(set._id || set.id);
 
                               if (!response.ok) {
                                 const errorData = await response.json().catch(() => ({}));
@@ -295,10 +280,7 @@ export default function QuestionSets() {
                               }
 
                               // Refresh the list after deletion
-                              const updatedResponse = await fetch('/api/v1/question-sets', {
-                                credentials: 'include',
-                                headers: { 'Content-Type': 'application/json' },
-                              });
+                              const updatedResponse = await getQuestionSets();
 
                               if (updatedResponse.ok) {
                                 const updatedData = await updatedResponse.json();

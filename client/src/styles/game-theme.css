@@ -273,7 +273,7 @@
 /* Form container styling */
 .game_theme .page--auth {
   max-width: 500px;
-  margin: 2rem auto;
+  margin: 0 auto;
   backdrop-filter: blur(20px);
 }
 
@@ -467,7 +467,7 @@
 /* Centered page layout */
 .game_theme .page--centered {
   max-width: 500px;
-  margin: 2rem auto;
+  margin: 0 auto;
   text-align: center;
 }
 

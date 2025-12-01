@@ -73,7 +73,7 @@ export default function SignUp() {
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                placeholder="Alex_Kachur"
+                placeholder="FamilyFeud"
                 autoComplete="username"
                 required
                 disabled={isSubmitting}
@@ -86,7 +86,7 @@ export default function SignUp() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="alex@familyfeud.ca"
+                placeholder="user@familyfeud.ca"
                 autoComplete="email"
                 required
                 disabled={isSubmitting}
@@ -118,17 +118,6 @@ export default function SignUp() {
                 disabled={isSubmitting}
               />
             </label>
-            {/* <label className="form-grid__full">
-              Role Request
-              <select name="role" value={formData.role} onChange={handleChange} disabled={isSubmitting}>
-                <option value="host">Host</option>
-                <option value="producer">Producer</option>
-              </select>
-            </label> */}
-
-            {/* TODO (Backend Team): confirm whether producer should map to admin=true or a dedicated role collection. */}
-
-            {/* I think this is better as gamesession setup logic?  */}
 
             <div className="form-actions">
               <button type="submit" disabled={isSubmitting}>
