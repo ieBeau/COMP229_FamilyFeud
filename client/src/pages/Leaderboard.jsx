@@ -2,7 +2,7 @@ import "../styles/Leaderboard.css";
 import { useState, useEffect } from "react";
 import { getLeaderboard } from "../api/leaderboard.api";
 
-import backgroundImage from "../assets/FF-Leaderboard.png";
+import logo from '/Family_Feud_Logo.png';
 
 export default function Leaderboard(props) {
 
