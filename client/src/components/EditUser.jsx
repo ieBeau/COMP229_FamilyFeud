@@ -6,7 +6,7 @@
 */
 
 import PageSection from "./PageSection";
-import profileIcon from '../assets/Icon.png';
+import profileIcon from '/Icon.png';
 import { useEffect, useState } from "react";
 
 import COUNTRY_LIST from '../assets/countries.json';

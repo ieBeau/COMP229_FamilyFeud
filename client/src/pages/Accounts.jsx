@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { useAccounts } from '../context/accounts.context.jsx';
 import { deleteUserById, updateUserById } from '../api/users.api.js';
 
-import profileIcon from '../assets/Icon.png';
+import profileIcon from '/Icon.png';
 
 import SearchBar from '../components/SearchBar.jsx';
 import PageSection from '../components/PageSection.jsx';

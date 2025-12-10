@@ -11,7 +11,7 @@ import { useAuth } from '../components/auth/AuthContext.js';
 
 import VerifyAction from '../components/VerifyAction.jsx';
 import PageSection from '../components/PageSection.jsx';
-import profileIcon from '../assets/Icon.png';
+import profileIcon from '/Icon.png';
 import logo from '/Family_Feud_Logo.png';
 
 import COUNTRY_LIST from '../assets/countries.json';

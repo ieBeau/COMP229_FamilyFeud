@@ -11,7 +11,7 @@ import { PRIMARY_ADMIN_NAV_LINKS, PRIMARY_AUTH_NAV_LINKS, PRIMARY_USER_NAV_LINKS
 import { useAuth } from "./auth/AuthContext";
 import { useGame } from "../context/game.context";
 
-import profileIcon from '../assets/Icon.png';
+import profileIcon from '/Icon.png';
 
 export default function Sidebar() {
 
@@ -143,7 +143,7 @@ export default function Sidebar() {
                                         className="drawer-section__toggle"
                                         onClick={() => setAdminOpen(!adminOpen)}
                                     >
-                                        Admin
+                                        Admin Tools
                                         <span className={`drawer-section__toggle-icon ${adminOpen ? 'drawer-section__toggle-icon--open' : ''}`}>▼</span>
                                     </button>
                                     <div className={`drawer-section__content ${adminOpen ? 'drawer-section__content--open' : ''}`}>
