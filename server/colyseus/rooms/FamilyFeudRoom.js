@@ -1189,9 +1189,15 @@ export class FamilyFeudRoom extends Room {
         });
 
         // Reveal all answers on board with staggered delays
+        const startRevealDelay = 3000;
+        setTimeout(() => {
+            this.state.message = `All answers revealed! Preparing next round...`;
+        }, startRevealDelay); // 3 seconds before all revealed
+
         const answerCount = this.state.answers.filter(ans => !ans.revealed).length;
         const revealDelay = 1000; // 1 second between each reveal
         const totalRevealTime = answerCount * revealDelay;
+        
 
         let counter = 0;
         this.state.answers.forEach((ans, index) => {
@@ -1199,14 +1205,14 @@ export class FamilyFeudRoom extends Room {
                 setTimeout(() => {
                     ans.revealed = true;
                     this.state.pointsOnBoard = this.state.calculatePointsOnBoard();
-                }, counter++ * revealDelay);
+                }, startRevealDelay + (counter++ * revealDelay));
             }
         });
 
         // Automatically advance to next round after all answers are revealed
         setTimeout(() => {
             this.autoAdvanceRound();
-        }, totalRevealTime + 2000); // 2 second buffer after last reveal
+        }, startRevealDelay + totalRevealTime + 2000); // 2 second buffer after last reveal
     }
 
     /**

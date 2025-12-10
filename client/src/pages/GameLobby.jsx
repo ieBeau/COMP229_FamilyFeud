@@ -370,7 +370,7 @@ export default function GameLobby() {
                                     <span className="lobby-player__avatar">
                                         {player.name.charAt(0).toUpperCase()}
                                     </span>
-                                    <span className="lobby-player__name">{player.name} {player.country}</span>
+                                    <span className="lobby-player__name">{player.name}</span>
                                     {player.isHost && <span className="lobby-player__badge lobby-player__badge--host">HOST</span>}
                                     {player.sessionId === myPlayer?.sessionId && <span className="lobby-player__badge lobby-player__badge--you">YOU</span>}
                                 </div>
