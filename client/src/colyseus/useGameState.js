@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import useGameSounds from './useGameSounds';
 
 /**
  * React hook for reactive game state updates
@@ -12,6 +13,9 @@ export function useGameState(room, gameState, userId) {
     const [buzzer, setBuzzer] = useState({ active: false, locked: false, winnerId: '' });
     const [timer, setTimer] = useState(null);
     const [fastMoney, setFastMoney] = useState(null);
+
+    // Hook must be called at top level, not inside useEffect
+    useGameSounds(gameState);
 
     // Update state when gameState changes
     useEffect(() => {

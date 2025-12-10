@@ -41,7 +41,7 @@ export const NAV_ADMIN_ITEMS = [
 export const NAV_PUBLIC_ITEMS = [
   {
     path: '/lobby',
-    label: 'Play Game',
+    label: 'Lobby',
     description: 'Join or host a Family Feud game session.',
   }
 ];
@@ -59,7 +59,7 @@ export const AUTH_NAV_ITEMS = [
     },
 ];
 
-export const PRIMARY_AUTH_NAV_LINKS = [HOME_NAV_ITEM, ...NAV_PUBLIC_ITEMS, ...AUTH_NAV_ITEMS];
+export const PRIMARY_AUTH_NAV_LINKS = [HOME_NAV_ITEM, ...AUTH_NAV_ITEMS];
 export const PRIMARY_USER_NAV_LINKS = [HOME_NAV_ITEM, ...NAV_PUBLIC_ITEMS, ...NAV_USER_ITEMS];
 export const PRIMARY_ADMIN_NAV_LINKS = [...NAV_ADMIN_ITEMS];
 

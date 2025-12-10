@@ -37,7 +37,7 @@ const getAiResponse = async (req, res) => {
         `;
         
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash-lite",
+            model: "gemini-2.5-flash",
             config: {
                 systemInstruction: prompt,
                 responseMimeType: "application/json",
