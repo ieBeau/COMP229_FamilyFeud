@@ -63,7 +63,6 @@ export default function GameBoard() {
 
     const handleLeave = () => {
         leaveGame();
-        navigate('/');
     };
 
     const getPhaseTitle = () => {

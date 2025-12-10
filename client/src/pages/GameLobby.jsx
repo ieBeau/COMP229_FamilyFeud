@@ -72,10 +72,16 @@ export default function GameLobby() {
 
     // Navigate to game when it starts - everyone goes to player view
     useEffect(() => {
-        if (phase === 'faceoff' || phase === 'play' || phase === 'steal' || phase === 'roundEnd' || phase === 'fastMoney') {
+        if (view === VIEW.WAITING && (phase === 'faceoff' || phase === 'play' || phase === 'steal' || phase === 'roundEnd' || phase === 'fastMoney')) {
             navigate('/player-view');
         }
-    }, [phase, navigate]);
+    }, [phase, view, navigate]);
+
+    useEffect(() => {
+        if (view === VIEW.WAITING && phase === 'lobby' && !isConnecting && !isConnected) {
+            handleLeave(); // Ensure no existing room
+        }
+    }, [view, phase, isConnecting, isConnected]);
 
     // Handle joining a game
     const handleJoin = async (e) => {
@@ -304,7 +310,8 @@ export default function GameLobby() {
             {/* Header with room code */}
             <header className="lobby-header">
                 <div className="lobby-header__brand">
-                    <span className="lobby-header__title">FAMILY FEUD</span>
+                    <img src="/Family_Feud_Logo.png" alt="Family Feud Logo" className="lobby-header__logo" />
+                    {/* <span className="lobby-header__title">FAMILY FEUD</span> */}
                     <span className="lobby-header__phase">Lobby</span>
                 </div>
 
@@ -363,7 +370,7 @@ export default function GameLobby() {
                                     <span className="lobby-player__avatar">
                                         {player.name.charAt(0).toUpperCase()}
                                     </span>
-                                    <span className="lobby-player__name">{player.name}</span>
+                                    <span className="lobby-player__name">{player.name} {player.country}</span>
                                     {player.isHost && <span className="lobby-player__badge lobby-player__badge--host">HOST</span>}
                                     {player.sessionId === myPlayer?.sessionId && <span className="lobby-player__badge lobby-player__badge--you">YOU</span>}
                                 </div>

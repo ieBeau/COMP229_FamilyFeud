@@ -557,6 +557,12 @@
     gap: 0.75rem;
 }
 
+.lobby-header__logo {
+    width: 150px;
+    height: auto;
+    align-self: center;
+}
+
 .lobby-header__title {
     font-family: var(--font-display);
     font-size: 1.5rem;
@@ -575,6 +581,7 @@
     padding: 0.25rem 0.75rem;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 100px;
+    align-self: center;
 }
 
 .lobby-header__code {
@@ -1036,7 +1043,9 @@
     }
 
     .lobby-header__brand {
+        display: flex;
         justify-content: center;
+        align-items: center;
     }
 
     .lobby-header__status {

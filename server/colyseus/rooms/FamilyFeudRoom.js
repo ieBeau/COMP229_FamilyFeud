@@ -595,7 +595,9 @@ export class FamilyFeudRoom extends Room {
         // Different handling based on phase
         if (this.state.phase === 'faceoff') {
             await this.handleFaceoffAnswer(client, player, answer);
-        } else if (this.state.phase === 'play' || this.state.phase === 'steal') {
+        } else if (this.state.phase === 'play') {
+            await this.handlePlayAnswer(client, player, answer);
+        } else if (this.state.phase === 'steal') {
             await this.handlePlayAnswer(client, player, answer);
         }
     }
@@ -692,6 +694,8 @@ export class FamilyFeudRoom extends Room {
 
                 if (result.index === 0) {
                     // Got #1 - they win!
+                    this.state.answers[result.index].revealed = true;
+                    this.state.pointsOnBoard = this.state.calculatePointsOnBoard();
                     this.declareFaceoffWinner(client.sessionId, player, result);
                 } else if (result.index > 0) {
                     // Got an answer, but not #1 - other team gets a chance
@@ -804,6 +808,10 @@ export class FamilyFeudRoom extends Room {
         this.state.buzzer.locked = true;
         this.state.faceoffWaitingForSecond = false;
         this.state.awaitingPlayOrPass = true;
+        
+        // Reveal the answer they got
+        this.state.answers[result.index].revealed = true;
+        this.state.pointsOnBoard = this.state.calculatePointsOnBoard();
 
         // Add points to player's individual score if they got an answer
         if (result.index >= 0) {
@@ -1180,10 +1188,25 @@ export class FamilyFeudRoom extends Room {
             totalScore: team.totalScore
         });
 
-        // Automatically advance to next round after showing results (5 seconds)
+        // Reveal all answers on board with staggered delays
+        const answerCount = this.state.answers.filter(ans => !ans.revealed).length;
+        const revealDelay = 1000; // 1 second between each reveal
+        const totalRevealTime = answerCount * revealDelay;
+
+        let counter = 0;
+        this.state.answers.forEach((ans, index) => {
+            if (!ans.revealed) {
+                setTimeout(() => {
+                    ans.revealed = true;
+                    this.state.pointsOnBoard = this.state.calculatePointsOnBoard();
+                }, counter++ * revealDelay);
+            }
+        });
+
+        // Automatically advance to next round after all answers are revealed
         setTimeout(() => {
             this.autoAdvanceRound();
-        }, 5000);
+        }, totalRevealTime + 2000); // 2 second buffer after last reveal
     }
 
     /**
@@ -1761,6 +1784,7 @@ export class FamilyFeudRoom extends Room {
     handleEndGame(client, message) {
         if (!this.isHost(client)) return;
 
+        this.state.phase = 'lobby';
         this.state.message = 'Game ended by host. Thanks for playing!';
         this.state.logEvent('gameEnded', client.sessionId, '', {});
 

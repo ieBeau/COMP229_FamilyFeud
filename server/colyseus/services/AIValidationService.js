@@ -91,7 +91,7 @@ export class AIValidationService {
 
             const response = await withTimeout(
                 client.models.generateContent({
-                    model: "gemini-2.5-flash-lite",
+                    model: "gemini-2.5-flash",
                     config: {
                         systemInstruction: prompt,
                         responseMimeType: "application/json",

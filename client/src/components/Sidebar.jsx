@@ -42,7 +42,7 @@ export default function Sidebar() {
     // Check if we're in a game view
     const isInGame = isConnected && (location.pathname === '/player-view' || location.pathname === '/game-board' || location.pathname === '/lobby');
     
-    const [menuOpen, setMenuOpen] = useState(true);
+    const [menuOpen, setMenuOpen] = useState(false);
     const [adminOpen, setAdminOpen] = useState(true);
     const [hostOpen, setHostOpen] = useState(true);
     const [gameControlsOpen, setGameControlsOpen] = useState(true);
@@ -262,7 +262,7 @@ export default function Sidebar() {
                                     <div className={`drawer-section__content ${hostOpen ? 'drawer-section__content--open' : ''}`}>
                                         <ul className="drawer-section__list">
                                             <li className="landing-basic__drawer-item">
-                                                <button type="button" className="game-controls__action game-controls__action--danger" onClick={() => { endGame(); navigate('/'); }}>Cancel Game</button>
+                                                <button type="button" className="game-controls__action game-controls__action--danger" onClick={() => { endGame(); navigate('/lobby'); }}>Cancel Game</button>
                                             </li>
                                         </ul>
                                     </div>
